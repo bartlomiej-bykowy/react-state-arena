@@ -1,0 +1,24 @@
+{
+  "name": "redux_app",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+
+  "scripts": {
+    "dev": "rsbuild dev",
+    "build": "rsbuild build",
+    "preview": "rsbuild preview"
+  },
+
+  "dependencies": {
+    "react": "^19.2.1",
+    "react-dom": "^19.2.1",
+    "shared-core": "workspace:*",
+    "shared-ui": "workspace:*"
+  },
+
+  "devDependencies": {
+    "@rsbuild/core": "^1.6.12",
+    "@rsbuild/plugin-react": "^1.4.2"
+  }
+}

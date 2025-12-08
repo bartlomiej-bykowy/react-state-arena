@@ -1,0 +1,23 @@
+{
+  "name": "react-state-arena",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [],
+  "scripts": {
+    "dev:host": "pnpm --filter host_app dev",
+    "dev:redux": "pnpm --filter redux_app dev",
+    "dev:zustand": "pnpm --filter zustand_app dev",
+    "dev:context": "pnpm --filter context_app dev",
+    "dev:all": "pnpm -r --parallel dev",
+
+    "build": "pnpm -r build",
+    "lint": "pnpm biome lint",
+    "format": "pnpm biome format"
+  },
+  "devDependencies": {
+    "typescript": "^5.6.3",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "@biomejs/biome": "2.3.8"
+  }
+}
