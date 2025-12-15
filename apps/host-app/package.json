@@ -9,16 +9,16 @@
     "preview": "rsbuild preview"
   },
   "dependencies": {
-    "main-app": "workspace:*",
+    "@packages/main-app": "workspace:*",
+    "@packages/shared-core": "workspace:*",
+    "@packages/shared-ui": "workspace:*",
     "react": "^19.2.1",
-    "react-dom": "^19.2.1",
-    "shared-core": "workspace:*",
-    "shared-ui": "workspace:*"
+    "react-dom": "^19.2.1"
   },
   "devDependencies": {
     "@rsbuild/core": "^1.6.12",
     "@rsbuild/plugin-react": "^1.4.2",
     "@tailwindcss/postcss": "^4.1.17",
-    "tailwindcss": "^4.1.17"
+    "tailwindcss": "^4.0.0"
   }
 }

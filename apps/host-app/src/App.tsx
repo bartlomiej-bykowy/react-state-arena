@@ -1,5 +1,5 @@
 import React from "react";
-import MainApp from "main-app/src/App";
+import MainApp from "@packages/main-app/src/App";
 
 // const ContextRemote = React.lazy(() => import("context_app/App"));
 // const ReduxRemote = React.lazy(() => import("redux_app/App")) || null;
@@ -8,9 +8,9 @@ import MainApp from "main-app/src/App";
 export default function App() {
   return (
     <div className="p-4 space-y-4">
-      <h1 className="text-2xl font-bold">Host App</h1>
+      <h1 className="text-2xl font-bold">React State Arena 🤼‍♂️</h1>
 
-      <section className="border p-4 bg-gray-100">
+      <section className="border p-4">
         <h2 className="font-semibold">Main App (local)</h2>
         <MainApp />
       </section>

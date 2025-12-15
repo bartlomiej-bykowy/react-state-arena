@@ -1,12 +1,21 @@
 import { defineConfig } from "@rsbuild/core";
 import { pluginReact } from "@rsbuild/plugin-react";
 import { dependencies } from "./package.json";
+import { fileURLToPath } from "node:url";
+
+const repoRoot = fileURLToPath(new URL("../..", import.meta.url));
 
 export default defineConfig({
   server: {
     port: 3003
   },
   plugins: [pluginReact({ splitChunks: { react: false } })],
+  tools: {
+    postcss: (_opts, { addPlugins }) => {
+      const tailwind = require("@tailwindcss/postcss");
+      addPlugins(tailwind({ base: repoRoot }));
+    }
+  },
   moduleFederation: {
     options: {
       name: "zustand_app",
@@ -26,8 +35,8 @@ export default defineConfig({
           requiredVersion: dependencies["react-dom"],
           eager: true
         },
-        "shared-ui": { singleton: true },
-        "shared-core": { singleton: true }
+        "@packages/shared-ui": { singleton: true },
+        "@packages/shared-core": { singleton: true }
       }
     }
   }

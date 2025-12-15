@@ -32,6 +32,10 @@
       "recommended": true,
       "style": {
         "noNonNullAssertion": "off"
+      },
+      "a11y": {
+        "useButtonType": "off",
+        "noAutofocus": "off"
       }
     }
   }
