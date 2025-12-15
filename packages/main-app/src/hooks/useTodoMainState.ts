@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import type { Filter, Todo } from "shared-ui/types";
 
 export function useTodoMainState(initialState: Todo[]) {
@@ -12,11 +12,11 @@ export function useTodoMainState(initialState: Todo[]) {
       text,
       completed: false
     };
-    setTasks((tasks) => [newTask, ...tasks]);
+    setTasks((oldTasks) => [newTask, ...oldTasks]);
   };
 
   const remove = (taskId: string) => {
-    setTasks(tasks.filter((task) => task.id !== taskId));
+    setTasks((oldTasks) => oldTasks.filter((task) => task.id !== taskId));
   };
 
   const edit = (taskId: string, text: string) => {
@@ -35,7 +35,7 @@ export function useTodoMainState(initialState: Todo[]) {
     });
   };
 
-  const filteredTasks = () => {
+  const filteredTasks = useMemo(() => {
     const filteredTasks = tasks.filter((task) => {
       if (filter === "active" && task.completed) return false;
       if (filter === "completed" && !task.completed) return false;
@@ -44,16 +44,18 @@ export function useTodoMainState(initialState: Todo[]) {
     return filteredTasks.filter((task) =>
       task.text.toLowerCase().includes(searchQuery.trim().toLowerCase())
     );
-  };
+  }, [tasks, filter, searchQuery]);
 
-  const stats = {
-    total: tasks.length,
-    active: tasks.filter((task) => !task.completed).length,
-    completed: tasks.filter((task) => task.completed).length
-  };
+  const stats = useMemo(
+    () => ({
+      total: tasks.length,
+      active: tasks.filter((task) => !task.completed).length,
+      completed: tasks.filter((task) => task.completed).length
+    }),
+    [tasks]
+  );
 
   return {
-    tasks,
     filteredTasks,
     filter,
     add,
