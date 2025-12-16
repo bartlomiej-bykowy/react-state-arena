@@ -1,4 +1,4 @@
-import React from "react";
+// import React from "react";
 import MainApp from "@packages/main-app/src/App";
 
 // const ContextRemote = React.lazy(() => import("context_app/App"));
@@ -10,26 +10,26 @@ export default function App() {
     <div className="p-4 space-y-4">
       <h1 className="text-2xl font-bold">React State Arena 🤼‍♂️</h1>
 
-      <section className="border p-4">
+      <section className="p-4 border">
         <h2 className="font-semibold">Main App (local)</h2>
         <MainApp />
       </section>
 
-      {/* <section className="border p-4 bg-gray-100">
+      {/* <section className="p-4 bg-gray-100 border">
         <h2 className="font-semibold">Context Remote</h2>
         <React.Suspense fallback="Loading Context Remote...">
           <ContextRemote />
         </React.Suspense>
       </section> */}
 
-      {/* <section className="border p-4 bg-gray-100">
+      {/* <section className="p-4 bg-gray-100 border">
         <h2 className="font-semibold">Redux Remote</h2>
         <React.Suspense fallback="Loading Redux Remote...">
           <ReduxRemote />
         </React.Suspense>
       </section> */}
 
-      {/* <section className="border p-4 bg-gray-100">
+      {/* <section className="p-4 bg-gray-100 border">
         <h2 className="font-semibold">Zustand Remote</h2>
         <React.Suspense fallback="Loading Zustand Remote...">
           <ZustandRemote />

@@ -1,6 +1,7 @@
 import { memo, useState } from "react";
-import type { KeyboardEvent } from "react";
+import type { KeyboardEvent, MouseEvent } from "react";
 import type { Todo } from "../..";
+import { useRenderCount } from "@packages/shared-core";
 
 export type TodoItemProps = {
   task: Todo;
@@ -8,6 +9,7 @@ export type TodoItemProps = {
   onToggle?: (id: string) => void;
   onEdit?: (id: string, text: string) => void;
   onDelete?: (id: string) => void;
+  onRender?: () => void;
 };
 
 export const TodoItem = memo(function TodoItem({
@@ -15,9 +17,11 @@ export const TodoItem = memo(function TodoItem({
   readonly,
   onToggle,
   onEdit,
-  onDelete
+  onDelete,
+  onRender
 }: TodoItemProps) {
   const [isEditing, setIsEditing] = useState(false);
+  const renders = useRenderCount();
 
   const handleToggle = () => {
     if (readonly) return;
@@ -25,7 +29,7 @@ export const TodoItem = memo(function TodoItem({
     onToggle?.(task.id);
   };
 
-  const handleEdit = (e: Event) => {
+  const handleEdit = (e: MouseEvent) => {
     if (readonly || task.completed) return;
 
     e.preventDefault();
@@ -47,15 +51,18 @@ export const TodoItem = memo(function TodoItem({
     }
   };
 
-  const handleDelete = (e: Event) => {
+  const handleDelete = (e: MouseEvent) => {
     if (readonly) return;
 
     e.preventDefault();
     onDelete?.(task.id);
   };
 
+  onRender?.();
+
   return (
     <div className="px-5 py-4 w-full flex items-center gap-x-4 hover:bg-gray-100 rounded-xl mb-4 shadow-[0_0_12px_0_rgba(66,68,90,0.25)]">
+      {renders}
       <label htmlFor={`task-${task.id}-checkbox`} className="sr-only">
         Mark the task as {task.completed ? "to do" : "completed"}
       </label>
@@ -63,7 +70,7 @@ export const TodoItem = memo(function TodoItem({
         type="checkbox"
         checked={task.completed}
         id={`task-${task.id}-checkbox`}
-        onChange={(e) => handleToggle(e)}
+        onChange={handleToggle}
         disabled={readonly}
       />
       {!isEditing ? (
@@ -82,7 +89,7 @@ export const TodoItem = memo(function TodoItem({
             type="text"
             defaultValue={task.text}
             id={`htmlInput-${task.id}`}
-            onKeyDown={(e) => handleKeyPress(e)}
+            onKeyDown={handleKeyPress}
             className="p-3 mb-1 w-full rounded-md border border-gray-400"
             autoFocus
           />

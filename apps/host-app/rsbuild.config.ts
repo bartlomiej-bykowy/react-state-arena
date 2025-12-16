@@ -40,8 +40,16 @@ export default defineConfig({
           requiredVersion: dependencies["react-dom"],
           eager: true
         },
-        "@packages/shared-ui": { singleton: true },
-        "@packages/shared-core": { singleton: true }
+        "@packages/shared-ui": {
+          singleton: true,
+          eager: true,
+          strictVersion: false
+        },
+        "@packages/shared-core": {
+          singleton: true,
+          eager: true,
+          strictVersion: false
+        }
       }
     }
   }

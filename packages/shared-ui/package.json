@@ -6,6 +6,7 @@
   "type": "module",
   "dependencies": {
     "react": "^19.2.1",
-    "react-dom": "^19.2.1"
+    "react-dom": "^19.2.1",
+    "@packages/shared-core": "workspace:*"
   }
 }

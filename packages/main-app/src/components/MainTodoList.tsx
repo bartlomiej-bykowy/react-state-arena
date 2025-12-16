@@ -8,6 +8,7 @@ import {
 } from "@packages/shared-ui/index";
 import { initialTasks } from "../initialTasks";
 import { useTodoMainState } from "../hooks/useTodoMainState";
+import { useRenderCounter } from "@packages/shared-core";
 
 export function MainTodoList() {
   const {
@@ -22,6 +23,10 @@ export function MainTodoList() {
     stats
   } = useTodoMainState(initialTasks);
 
+  const renderCounter = useRenderCounter();
+
+  renderCounter.incrementListRenders();
+
   return (
     <>
       <div className="flex items-center px-5 py-4 mb-8 bg-purple-600 rounded-md">
@@ -35,6 +40,10 @@ export function MainTodoList() {
         total={stats.total}
         active={stats.active}
         completed={stats.completed}
+        renders={{
+          list: renderCounter.listRenders,
+          items: renderCounter.itemRenders
+        }}
       />
       {filteredTasks.length ? (
         filteredTasks.map((task) => (
@@ -44,6 +53,7 @@ export function MainTodoList() {
               onDelete={remove}
               onEdit={edit}
               onToggle={toggle}
+              onRender={renderCounter.incrementItemRenders}
             />
           </div>
         ))
