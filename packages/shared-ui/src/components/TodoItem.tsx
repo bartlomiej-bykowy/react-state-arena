@@ -1,7 +1,7 @@
-import { memo, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import type { KeyboardEvent, MouseEvent } from "react";
 import type { Todo } from "../..";
-import { useRenderCount } from "@packages/shared-core";
+import { useItemRenderCount } from "@packages/shared-core";
 
 export type TodoItemProps = {
   task: Todo;
@@ -9,7 +9,7 @@ export type TodoItemProps = {
   onToggle?: (id: string) => void;
   onEdit?: (id: string, text: string) => void;
   onDelete?: (id: string) => void;
-  onRender?: () => void;
+  onRender?: (id: string) => void;
 };
 
 export const TodoItem = memo(function TodoItem({
@@ -21,7 +21,7 @@ export const TodoItem = memo(function TodoItem({
   onRender
 }: TodoItemProps) {
   const [isEditing, setIsEditing] = useState(false);
-  const renders = useRenderCount();
+  const renders = useItemRenderCount();
 
   const handleToggle = () => {
     if (readonly) return;
@@ -58,7 +58,9 @@ export const TodoItem = memo(function TodoItem({
     onDelete?.(task.id);
   };
 
-  onRender?.();
+  useEffect(() => {
+    onRender?.(task.id);
+  });
 
   return (
     <div className="px-5 py-4 w-full flex items-center gap-x-4 hover:bg-gray-100 rounded-xl mb-4 shadow-[0_0_12px_0_rgba(66,68,90,0.25)]">

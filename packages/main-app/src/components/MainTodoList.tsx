@@ -9,6 +9,7 @@ import {
 import { initialTasks } from "../initialTasks";
 import { useTodoMainState } from "../hooks/useTodoMainState";
 import { useRenderCounter } from "@packages/shared-core";
+import { useEffect } from "react";
 
 export function MainTodoList() {
   const {
@@ -22,10 +23,11 @@ export function MainTodoList() {
     setSearchQuery,
     stats
   } = useTodoMainState(initialTasks);
-
   const renderCounter = useRenderCounter();
 
-  renderCounter.incrementListRenders();
+  useEffect(() => {
+    renderCounter.incrementListRenders();
+  });
 
   return (
     <>
@@ -40,10 +42,6 @@ export function MainTodoList() {
         total={stats.total}
         active={stats.active}
         completed={stats.completed}
-        renders={{
-          list: renderCounter.listRenders,
-          items: renderCounter.itemRenders
-        }}
       />
       {filteredTasks.length ? (
         filteredTasks.map((task) => (
