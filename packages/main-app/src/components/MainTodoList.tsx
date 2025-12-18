@@ -8,8 +8,8 @@ import {
 } from "@packages/shared-ui/index";
 import { initialTasks } from "../initialTasks";
 import { useTodoMainState } from "../hooks/useTodoMainState";
-import { useRenderCounter } from "@packages/shared-core";
-import { useEffect } from "react";
+import { useListStats } from "@packages/shared-core";
+import { useLayoutEffect } from "react";
 
 export function MainTodoList() {
   const {
@@ -23,10 +23,10 @@ export function MainTodoList() {
     setSearchQuery,
     stats
   } = useTodoMainState(initialTasks);
-  const renderCounter = useRenderCounter();
+  const listStats = useListStats();
 
-  useEffect(() => {
-    renderCounter.incrementListRenders();
+  useLayoutEffect(() => {
+    listStats.recordRender();
   });
 
   return (
@@ -51,7 +51,6 @@ export function MainTodoList() {
               onDelete={remove}
               onEdit={edit}
               onToggle={toggle}
-              onRender={renderCounter.incrementItemRenders}
             />
           </div>
         ))

@@ -1,7 +1,7 @@
-import { memo, useEffect, useState } from "react";
+import { memo, useLayoutEffect, useRef, useState } from "react";
 import type { KeyboardEvent, MouseEvent } from "react";
 import type { Todo } from "../..";
-import { useItemRenderCount } from "@packages/shared-core";
+import { useItemStats } from "@packages/shared-core";
 
 export type TodoItemProps = {
   task: Todo;
@@ -9,7 +9,6 @@ export type TodoItemProps = {
   onToggle?: (id: string) => void;
   onEdit?: (id: string, text: string) => void;
   onDelete?: (id: string) => void;
-  onRender?: (id: string) => void;
 };
 
 export const TodoItem = memo(function TodoItem({
@@ -17,11 +16,16 @@ export const TodoItem = memo(function TodoItem({
   readonly,
   onToggle,
   onEdit,
-  onDelete,
-  onRender
+  onDelete
 }: TodoItemProps) {
   const [isEditing, setIsEditing] = useState(false);
-  const renders = useItemRenderCount();
+  const itemStats = useItemStats(task.id);
+  const renders = useRef(0);
+  renders.current++;
+
+  useLayoutEffect(() => {
+    itemStats.recordRender();
+  }, [renders.current]);
 
   const handleToggle = () => {
     if (readonly) return;
@@ -58,13 +62,9 @@ export const TodoItem = memo(function TodoItem({
     onDelete?.(task.id);
   };
 
-  useEffect(() => {
-    onRender?.(task.id);
-  });
-
   return (
     <div className="px-5 py-4 w-full flex items-center gap-x-4 hover:bg-gray-100 rounded-xl mb-4 shadow-[0_0_12px_0_rgba(66,68,90,0.25)]">
-      {renders}
+      {renders.current}
       <label htmlFor={`task-${task.id}-checkbox`} className="sr-only">
         Mark the task as {task.completed ? "to do" : "completed"}
       </label>

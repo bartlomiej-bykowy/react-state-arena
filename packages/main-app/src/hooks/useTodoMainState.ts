@@ -1,39 +1,39 @@
-import { useMemo, useState } from "react";
-import type { Filter, Todo } from "shared-ui/types";
+import { useCallback, useMemo, useState } from "react";
+import type { Filter, Todo } from "@packages/shared-ui";
 
 export function useTodoMainState(initialState: Todo[]) {
   const [tasks, setTasks] = useState<Todo[]>(initialState);
   const [filter, setFilter] = useState<Filter>("all");
   const [searchQuery, setSearchQuery] = useState("");
 
-  const add = (text: string) => {
+  const add = useCallback((text: string) => {
     const newTask: Todo = {
       id: crypto.randomUUID(),
       text,
       completed: false
     };
     setTasks((oldTasks) => [newTask, ...oldTasks]);
-  };
+  }, []);
 
-  const remove = (taskId: string) => {
+  const remove = useCallback((taskId: string) => {
     setTasks((oldTasks) => oldTasks.filter((task) => task.id !== taskId));
-  };
+  }, []);
 
-  const edit = (taskId: string, text: string) => {
+  const edit = useCallback((taskId: string, text: string) => {
     setTasks((oldTasks) => {
       return oldTasks.map((task) =>
         task.id !== taskId ? task : { ...task, text }
       );
     });
-  };
+  }, []);
 
-  const toggle = (taskId: string) => {
+  const toggle = useCallback((taskId: string) => {
     setTasks((oldTasks) => {
       return oldTasks.map((task) =>
         task.id !== taskId ? task : { ...task, completed: !task.completed }
       );
     });
-  };
+  }, []);
 
   const filteredTasks = useMemo(() => {
     const filteredTasks = tasks.filter((task) => {

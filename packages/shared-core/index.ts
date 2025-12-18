@@ -1,5 +1,5 @@
-export { useRenderCounter } from "./src/hooks/useRenderCounter";
-export { useItemRenderCount } from "./src/hooks/useItemRenderCount";
+export { useListStats } from "./src/hooks/useListStats";
+export { useItemStats } from "./src/hooks/useItemStats";
 export { useSignal } from "./src/hooks/useSignal";
 export * from "./src/signal";
-export * from "./src/metrics";
+export * from "./src/metricSignals";

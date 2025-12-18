@@ -8,10 +8,6 @@ export type TodoStatsProps = {
   total: number;
   active: number;
   completed: number;
-  // renders?: {
-  //   list: number;
-  //   items: number;
-  // };
   timing?: {
     lastMs: number;
     avgMs: number;
@@ -22,7 +18,6 @@ export function TodoStats({
   total,
   active,
   completed,
-  // renders,
   timing
 }: TodoStatsProps) {
   const listRenders = useSignal(listRendersSignal);
@@ -37,11 +32,6 @@ export function TodoStats({
       <div>
         Number of renders: list = {listRenders} • items = {itemRenders}
       </div>
-      {/* {renders && (
-        <div>
-          Number of renders: list = {renders.list} • items = {renders.items}
-        </div>
-      )} */}
 
       {timing && (
         <div>
