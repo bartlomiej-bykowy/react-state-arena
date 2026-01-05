@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import type { Subscriber } from "../signal";
 
-type Signal = {
-  get(): number;
-  subscribe(fn: Subscriber): () => void;
+type Signal<T> = {
+  get(): T;
+  subscribe(fn: Subscriber<T>): () => void;
 };
 
-export function useSignal(signal: Signal) {
+export function useSignal<T>(signal: Signal<T>) {
   const [value, setValue] = useState(signal.get());
 
   useEffect(() => {

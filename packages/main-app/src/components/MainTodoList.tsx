@@ -12,6 +12,7 @@ import { useListStats } from "@packages/shared-core";
 import { useLayoutEffect } from "react";
 
 export function MainTodoList() {
+  const listStats = useListStats();
   const {
     filteredTasks,
     filter,
@@ -22,11 +23,13 @@ export function MainTodoList() {
     setFilter,
     setSearchQuery,
     stats
-  } = useTodoMainState(initialTasks);
-  const listStats = useListStats();
+  } = useTodoMainState(initialTasks, listStats);
+
+  listStats.startTiming();
 
   useLayoutEffect(() => {
     listStats.recordRender();
+    listStats.endTiming();
   });
 
   return (

@@ -1,39 +1,61 @@
 import { useCallback, useMemo, useState } from "react";
 import type { Filter, Todo } from "@packages/shared-ui";
+import type { useListStats } from "@packages/shared-core";
 
-export function useTodoMainState(initialState: Todo[]) {
+export function useTodoMainState(
+  initialState: Todo[],
+  listStatsHook: ReturnType<typeof useListStats>
+) {
   const [tasks, setTasks] = useState<Todo[]>(initialState);
   const [filter, setFilter] = useState<Filter>("all");
   const [searchQuery, setSearchQuery] = useState("");
 
-  const add = useCallback((text: string) => {
-    const newTask: Todo = {
-      id: crypto.randomUUID(),
-      text,
-      completed: false
-    };
-    setTasks((oldTasks) => [newTask, ...oldTasks]);
-  }, []);
+  const { startTiming } = listStatsHook;
 
-  const remove = useCallback((taskId: string) => {
-    setTasks((oldTasks) => oldTasks.filter((task) => task.id !== taskId));
-  }, []);
+  const add = useCallback(
+    (text: string) => {
+      startTiming();
+      const newTask: Todo = {
+        id: crypto.randomUUID(),
+        text,
+        completed: false
+      };
+      setTasks((oldTasks) => [newTask, ...oldTasks]);
+    },
+    [startTiming]
+  );
 
-  const edit = useCallback((taskId: string, text: string) => {
-    setTasks((oldTasks) => {
-      return oldTasks.map((task) =>
-        task.id !== taskId ? task : { ...task, text }
-      );
-    });
-  }, []);
+  const remove = useCallback(
+    (taskId: string) => {
+      startTiming();
+      setTasks((oldTasks) => oldTasks.filter((task) => task.id !== taskId));
+    },
+    [startTiming]
+  );
 
-  const toggle = useCallback((taskId: string) => {
-    setTasks((oldTasks) => {
-      return oldTasks.map((task) =>
-        task.id !== taskId ? task : { ...task, completed: !task.completed }
-      );
-    });
-  }, []);
+  const edit = useCallback(
+    (taskId: string, text: string) => {
+      startTiming();
+      setTasks((oldTasks) => {
+        return oldTasks.map((task) =>
+          task.id !== taskId ? task : { ...task, text }
+        );
+      });
+    },
+    [startTiming]
+  );
+
+  const toggle = useCallback(
+    (taskId: string) => {
+      startTiming();
+      setTasks((oldTasks) => {
+        return oldTasks.map((task) =>
+          task.id !== taskId ? task : { ...task, completed: !task.completed }
+        );
+      });
+    },
+    [startTiming]
+  );
 
   const filteredTasks = useMemo(() => {
     const filteredTasks = tasks.filter((task) => {

@@ -20,12 +20,19 @@ export const TodoItem = memo(function TodoItem({
 }: TodoItemProps) {
   const [isEditing, setIsEditing] = useState(false);
   const itemStats = useItemStats(task.id);
-  const renders = useRef(0);
-  renders.current++;
+  itemStats.startTiming();
+  const rendersCountRef = useRef<HTMLSpanElement>(null);
+  const renderTimesRef = useRef<HTMLSpanElement>(null);
 
   useLayoutEffect(() => {
     itemStats.recordRender();
-  }, [renders.current]);
+    itemStats.endTiming();
+
+    const { renders, timing } = itemStats.stats!;
+
+    rendersCountRef.current!.textContent = renders.toString();
+    renderTimesRef.current!.textContent = `Render time: last = ${timing.lastMs.toFixed(2)}ms • total = ${timing.totalMs.toFixed(2)}ms`;
+  });
 
   const handleToggle = () => {
     if (readonly) return;
@@ -63,8 +70,9 @@ export const TodoItem = memo(function TodoItem({
   };
 
   return (
-    <div className="px-5 py-4 w-full flex items-center gap-x-4 hover:bg-gray-100 rounded-xl mb-4 shadow-[0_0_12px_0_rgba(66,68,90,0.25)]">
-      {renders.current}
+    <div className="relative px-5 py-4 w-full flex items-center gap-x-4 hover:bg-gray-100 rounded-xl mb-4 shadow-[0_0_12px_0_rgba(66,68,90,0.25)]">
+      <span ref={rendersCountRef}></span>
+      <span ref={renderTimesRef}></span>
       <label htmlFor={`task-${task.id}-checkbox`} className="sr-only">
         Mark the task as {task.completed ? "to do" : "completed"}
       </label>
@@ -101,14 +109,16 @@ export const TodoItem = memo(function TodoItem({
         </div>
       )}
       <div className="flex gap-x-2 items-center ml-auto">
-        <button
-          title="Edit"
-          className={`w-10 h-10 flex items-center justify-center ${task.completed ? "cursor-not-allowed" : "cursor-pointer"}`}
-          onClick={(e) => handleEdit(e)}
-          disabled={readonly || task.completed}
-        >
-          🖊️
-        </button>
+        {!task.completed && (
+          <button
+            title="Edit"
+            className={`w-10 h-10 flex items-center justify-center ${task.completed ? "cursor-not-allowed" : "cursor-pointer"}`}
+            onClick={(e) => handleEdit(e)}
+            disabled={readonly || task.completed}
+          >
+            🖊️
+          </button>
+        )}
         <button
           title="Delete"
           className="flex justify-center items-center w-10 h-10 cursor-pointer"

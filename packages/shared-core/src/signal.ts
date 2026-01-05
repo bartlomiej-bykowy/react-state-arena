@@ -1,8 +1,8 @@
-export type Subscriber = (value: number) => void;
+export type Subscriber<T> = (value: T) => void;
 
-export function createSingal(initialValue: number) {
+export function createSignal<T>(initialValue: T) {
   let value = initialValue;
-  const subscribers = new Set<Subscriber>();
+  const subscribers = new Set<Subscriber<T>>();
   let subscribersHasRan = false;
 
   return {
@@ -10,22 +10,21 @@ export function createSingal(initialValue: number) {
       return value;
     },
 
-    set(newValue: number) {
+    set(newValue: T) {
       value = newValue;
-      subscribers.forEach((fn) => fn(value));
+      subscribers.forEach((fn) => {
+        fn(value);
+      });
     },
 
-    increment() {
-      value += 1;
-      subscribers.forEach((fn) => fn(value));
-    },
-
-    subscribe(fn: Subscriber) {
+    subscribe(fn: Subscriber<T>) {
       subscribers.add(fn);
       // for cases when subscribe() happens after increment() or set().
       // Typically on initial render
       if (!subscribersHasRan) {
-        subscribers.forEach((fn) => fn(value));
+        subscribers.forEach((fn) => {
+          fn(value);
+        });
         subscribersHasRan = true;
       }
       return () => subscribers.delete(fn);

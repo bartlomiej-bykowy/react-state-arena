@@ -5,6 +5,8 @@
   "workspaces": [],
   "scripts": {
     "dev:host": "pnpm --filter host_app dev",
+    "preview:host": "pnpm --filter host_app preview",
+    "build:host": "pnpm --filter host_app build",
     "dev:redux": "pnpm --filter redux_app dev",
     "dev:zustand": "pnpm --filter zustand_app dev",
     "dev:context": "pnpm --filter context_app dev",
