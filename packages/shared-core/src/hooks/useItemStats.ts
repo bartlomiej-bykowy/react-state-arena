@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useCallback, useRef } from "react";
 import { itemRendersSignal, itemTimingSignal } from "../metricSignals";
 import { registry } from "../registry";
 
@@ -27,9 +27,9 @@ export function useItemStats(id: string) {
     itemRendersSignal.set(total);
   };
 
-  const startTiming = () => {
+  const startTiming = useCallback(() => {
     startRender.current = performance.now();
-  };
+  }, []);
 
   const endTiming = () => {
     if (startRender.current === null) return;
@@ -50,10 +50,15 @@ export function useItemStats(id: string) {
     startRender.current = null;
   };
 
+  const removeItem = useCallback(() => {
+    registry.items.delete(id);
+  }, [id]);
+
   return {
     stats: registry.items.get(id),
     recordRender,
     startTiming,
-    endTiming
+    endTiming,
+    removeItem
   };
 }

@@ -1,5 +1,5 @@
+import type { Filter } from "@packages/shared-core";
 import type { ChangeEvent } from "react";
-import type { Filter } from "../..";
 
 const filters: Filter[] = ["all", "active", "completed"];
 

@@ -6,6 +6,11 @@
     "types": ["react"],
     "outDir": "dist"
   },
-  "include": ["src", "index.ts"],
+  "include": [
+    "src",
+    "index.ts",
+    "../main-app/src/components/TodoFilters.tsx",
+    "../main-app/src/components/TodoStats.tsx"
+  ],
   "exclude": ["node_modules"]
 }

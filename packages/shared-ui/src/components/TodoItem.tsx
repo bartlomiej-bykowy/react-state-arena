@@ -1,7 +1,7 @@
-import { memo, useLayoutEffect, useRef, useState } from "react";
+import { memo, useEffect, useLayoutEffect, useRef, useState } from "react";
 import type { KeyboardEvent, MouseEvent } from "react";
-import type { Todo } from "../..";
-import { useItemStats } from "@packages/shared-core";
+
+import { type Todo, useItemStats } from "@packages/shared-core";
 
 export type TodoItemProps = {
   task: Todo;
@@ -33,6 +33,10 @@ export const TodoItem = memo(function TodoItem({
     rendersCountRef.current!.textContent = renders.toString();
     renderTimesRef.current!.textContent = `Render time: last = ${timing.lastMs.toFixed(2)}ms • total = ${timing.totalMs.toFixed(2)}ms`;
   });
+
+  useEffect(() => {
+    return () => itemStats.removeItem();
+  }, []);
 
   const handleToggle = () => {
     if (readonly) return;

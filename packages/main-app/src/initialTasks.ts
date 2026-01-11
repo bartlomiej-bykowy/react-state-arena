@@ -1,4 +1,4 @@
-import type { Todo } from "@packages/shared-ui";
+import type { Todo } from "@packages/shared-core";
 
 export const initialTasks: Todo[] = [
   {
