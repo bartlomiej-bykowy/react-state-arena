@@ -11,7 +11,7 @@ export default function App() {
       <h1 className="text-2xl font-bold">React State Arena 🤼‍♂️</h1>
 
       <section className="p-4 border">
-        <h2 className="font-semibold">Main App (local)</h2>
+        <h2 className="mb-4 font-semibold">Main App</h2>
         <MainApp />
       </section>
 

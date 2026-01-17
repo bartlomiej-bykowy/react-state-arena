@@ -20,8 +20,11 @@ export function TodoFilters({
   };
 
   return (
-    <div className="flex ml-6 text-white item-center">
-      <label htmlFor="task-type-select" className="flex items-center">
+    <div className="flex mb-4 item-center">
+      <label
+        htmlFor="task-type-select"
+        className="flex items-center whitespace-nowrap"
+      >
         Show tasks:
       </label>
       <select
@@ -30,7 +33,7 @@ export function TodoFilters({
         disabled={readonly}
         onChange={(e) => handleChange(e)}
         value={activeFilter}
-        className="px-3 py-2 ml-2 rounded-md border border-white"
+        className="px-3 py-2 ml-2 rounded-md border border-gray-400"
       >
         {filters.map((filter) => (
           <option value={filter} key={filter}>

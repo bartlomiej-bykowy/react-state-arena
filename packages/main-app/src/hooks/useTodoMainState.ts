@@ -8,6 +8,7 @@ export function useTodoMainState(
   const [tasks, setTasks] = useState<Todo[]>(initialState);
   const [filter, setFilter] = useState<Filter>("all");
   const [searchQuery, setSearchQuery] = useState("");
+  const [itemStatsVisible, setItemStatsVisible] = useState(false);
 
   const visibleIdsRef = useRef<string[]>([]);
 
@@ -79,6 +80,10 @@ export function useTodoMainState(
     [tasks]
   );
 
+  // const handleItemStatsVisibility = useCallback(() => {
+  //   setItemStatsVisible(!itemStatsVisible);
+  // }, []);
+
   useEffect(() => {
     visibleIdsRef.current = filteredTasks.map((ft) => ft.id);
   }, [filteredTasks]);
@@ -141,6 +146,9 @@ export function useTodoMainState(
     setSearchQuery,
     reset,
     removeCompleted,
-    stats
+    stats,
+    // handleItemStatsVisibility,
+    itemStatsVisible,
+    setItemStatsVisible
   };
 }

@@ -17,8 +17,8 @@ export function TodoAddItem({ onSave }: TodoAddItemProps) {
   };
 
   return (
-    <form onSubmit={(e) => handleSubmit(e)}>
-      <label htmlFor="new-task-input" className="mb-2 text-gray-600">
+    <form onSubmit={(e) => handleSubmit(e)} className="text-xs">
+      <label htmlFor="new-task-input" className="mb-2 text-gray-600 sr-only">
         Enter a new task
       </label>
       <div className="flex gap-x-6 items-center w-full">
@@ -26,12 +26,13 @@ export function TodoAddItem({ onSave }: TodoAddItemProps) {
           type="text"
           id="new-task-input"
           name="new-task-input"
-          className="flex-1 px-5 py-4 rounded-md border border-gray-600"
+          placeholder="Enter task name"
+          className="flex-1 px-3 py-2 rounded-md border border-gray-400"
           ref={inputRef}
         />
         <button
           type="submit"
-          className="px-5 py-4 text-white bg-blue-700 rounded-md cursor-pointer"
+          className="px-3 py-2 text-white bg-blue-700 rounded-md cursor-pointer"
         >
           Add task
         </button>

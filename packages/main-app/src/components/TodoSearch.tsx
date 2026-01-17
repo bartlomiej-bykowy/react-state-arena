@@ -20,10 +20,7 @@ export function TodoSearch({ readonly, onSearch }: TodoSearchProps) {
   };
 
   return (
-    <form
-      className="overflow-hidden relative w-1/3 rounded-md"
-      onSubmit={handleSubmit}
-    >
+    <form className="overflow-hidden relative mb-4" onSubmit={handleSubmit}>
       <label htmlFor="task-search-input" className="sr-only">
         Search for a taks
       </label>
@@ -34,14 +31,14 @@ export function TodoSearch({ readonly, onSearch }: TodoSearchProps) {
         onChange={handleSearch}
         placeholder="Search tasks..."
         disabled={readonly}
-        className="py-2 pr-12 pl-3 w-full bg-white"
+        className="py-2 pr-12 pl-3 rounded-md border border-gray-400 focus:border-purple-600"
         ref={inputRef}
       />
       <button
         type="submit"
         title="Search"
         disabled={readonly}
-        className="flex absolute top-0 right-0 justify-center items-center w-10 h-10 bg-transparent cursor-pointer disabled:cursor-not-allowed"
+        className="flex absolute top-0 right-0 justify-center items-center w-8 h-8 bg-transparent cursor-pointer disabled:cursor-not-allowed"
       >
         🔎
       </button>

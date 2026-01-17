@@ -10,6 +10,9 @@ type TodoActionsProps = {
   removeCompleted: () => void;
 };
 
+const buttonStyles =
+  "px-3 py-2 rounded-md cursor-pointer text-white bg-blue-700";
+
 export function TodoActions({
   visibleTaskIds,
   addMany,
@@ -42,21 +45,42 @@ export function TodoActions({
   };
 
   return (
-    <div className="flex gap-x-3 items-center">
-      <label htmlFor="number-of-tasks" className="sr-only">
-        Set number of tasks
-      </label>
-      <input
-        type="number"
-        placeholder="100"
-        value={numOfTasks}
-        onChange={(e) => setNumOfTasks(Number(e.target.value))}
-      />
-      <button onClick={handleAddMany}>Add {numOfTasks} tasks</button>
-      <button onClick={handleToggleMany}>Toggle {numOfTasks} tasks</button>
-      <button onClick={handleRemoveMany}>Remove {numOfTasks} tasks</button>
-      <button onClick={reset}>Reset</button>
-      <button onClick={removeCompleted}>Remove completed</button>
+    <div className="flex gap-x-3 items-center mb-4 whitespace-nowrap">
+      <div className="flex gap-x-3 items-center p-2 rounded-md border border-gray-400 border-dashed">
+        <button onClick={handleAddMany} className={buttonStyles}>
+          Add
+        </button>
+        <button onClick={handleToggleMany} className={buttonStyles}>
+          Toggle
+        </button>
+        <button onClick={handleRemoveMany} className={buttonStyles}>
+          Remove
+        </button>
+
+        <label htmlFor="number-of-tasks" className="sr-only">
+          Set number of tasks
+        </label>
+        <input
+          id="number-of-tasks"
+          type="number"
+          placeholder="100"
+          value={numOfTasks}
+          min={1}
+          onChange={(e) =>
+            setNumOfTasks(
+              Number(e.target.value) < 1 ? 1 : Number(e.target.value)
+            )
+          }
+          className="max-w-[75px] px-3 py-2 rounded-md border border-gray-400 focus:border-purple-600"
+        />
+        <span>tasks</span>
+      </div>
+      <button onClick={reset} className={buttonStyles}>
+        Reset
+      </button>
+      <button onClick={removeCompleted} className={buttonStyles}>
+        Remove completed
+      </button>
     </div>
   );
 }

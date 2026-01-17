@@ -6,6 +6,7 @@ import { type Todo, useItemStats } from "@packages/shared-core";
 export type TodoItemProps = {
   task: Todo;
   readonly?: boolean;
+  statsVisible: boolean;
   onToggle?: (id: string) => void;
   onEdit?: (id: string, text: string) => void;
   onDelete?: (id: string) => void;
@@ -14,6 +15,7 @@ export type TodoItemProps = {
 export const TodoItem = memo(function TodoItem({
   task,
   readonly,
+  statsVisible,
   onToggle,
   onEdit,
   onDelete
@@ -74,9 +76,20 @@ export const TodoItem = memo(function TodoItem({
   };
 
   return (
-    <div className="relative px-5 py-4 w-full flex items-center gap-x-4 hover:bg-gray-100 rounded-xl mb-4 shadow-[0_0_12px_0_rgba(66,68,90,0.25)]">
-      <span ref={rendersCountRef}></span>
-      <span ref={renderTimesRef}></span>
+    <div className="relative px-3 py-2 w-full flex items-center gap-x-4 hover:bg-gray-100 rounded-md mb-4 shadow-[0_0_12px_0_rgba(66,68,90,0.25)] text-xs">
+      <div
+        className={`flex absolute top-0 right-0 gap-x-3 items-center text-[10px] -translate-y-1/2 ${!statsVisible ? "invisible" : ""}`}
+      >
+        <span
+          className="px-1 py-0.5 bg-green-400 rounded-full"
+          ref={renderTimesRef}
+        ></span>
+        <span
+          className="flex justify-center items-center h-[18px] text-white bg-red-400 rounded-full min-w-[18px]"
+          ref={rendersCountRef}
+        ></span>
+      </div>
+
       <label htmlFor={`task-${task.id}-checkbox`} className="sr-only">
         Mark the task as {task.completed ? "to do" : "completed"}
       </label>
@@ -95,7 +108,7 @@ export const TodoItem = memo(function TodoItem({
           {task.text}
         </p>
       ) : (
-        <div className="flex relative flex-col">
+        <div className="flex relative gap-x-2 items-center">
           <label htmlFor={`htmlInput-${task.id}`} className="sr-only">
             Edit task
           </label>
@@ -104,19 +117,19 @@ export const TodoItem = memo(function TodoItem({
             defaultValue={task.text}
             id={`htmlInput-${task.id}`}
             onKeyDown={handleKeyPress}
-            className="p-3 mb-1 w-full rounded-md border border-gray-400"
+            className="px-2 py-1 w-full rounded-md border border-gray-400"
             autoFocus
           />
-          <p className="text-sm text-gray-600">
+          <p className="text-[10px] text-gray-600 whitespace-nowrap">
             (Press Enter to accept, press Esc to cancel)
           </p>
         </div>
       )}
       <div className="flex gap-x-2 items-center ml-auto">
-        {!task.completed && (
+        {!task.completed && !isEditing && (
           <button
             title="Edit"
-            className={`w-10 h-10 flex items-center justify-center ${task.completed ? "cursor-not-allowed" : "cursor-pointer"}`}
+            className={`w-7 h-7 flex items-center justify-center ${task.completed ? "cursor-not-allowed" : "cursor-pointer"}`}
             onClick={(e) => handleEdit(e)}
             disabled={readonly || task.completed}
           >
@@ -125,7 +138,7 @@ export const TodoItem = memo(function TodoItem({
         )}
         <button
           title="Delete"
-          className="flex justify-center items-center w-10 h-10 cursor-pointer"
+          className="flex justify-center items-center w-7 h-7 cursor-pointer"
           onClick={(e) => handleDelete(e)}
           disabled={readonly}
         >

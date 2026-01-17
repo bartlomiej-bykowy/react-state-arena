@@ -16,6 +16,7 @@ import { useTodoMainState } from "../hooks/useTodoMainState";
 import { useListStats } from "@packages/shared-core";
 import { useLayoutEffect } from "react";
 import { TodoActions } from "./TodoActions";
+import { TodoItemStatsToggle } from "./TodoItemStatsToggle";
 
 export function MainTodoList() {
   const listStats = useListStats();
@@ -33,6 +34,9 @@ export function MainTodoList() {
     setFilter,
     setSearchQuery,
     reset,
+    // handleItemStatsVisibility,
+    itemStatsVisible,
+    setItemStatsVisible,
     stats
   } = useTodoMainState(initialTasks, listStats);
 
@@ -45,9 +49,13 @@ export function MainTodoList() {
 
   return (
     <>
-      <div className="flex items-center px-5 py-4 mb-8 bg-purple-600 rounded-md">
+      <div className="flex flex-wrap gap-x-4 items-center text-xs">
         <TodoSearch onSearch={setSearchQuery} />
         <TodoFilters activeFilter={filter} onChange={setFilter} />
+        <TodoItemStatsToggle
+          onChange={setItemStatsVisible}
+          value={itemStatsVisible}
+        />
         <TodoActions
           visibleTaskIds={filteredTasks.map((t) => t.id)}
           addMany={addMany}
@@ -57,14 +65,17 @@ export function MainTodoList() {
           removeCompleted={removeCompleted}
         />
       </div>
-      <div className="mb-8">
+      <div className="mb-5">
         <TodoAddItem onSave={add} />
       </div>
-      <TodoStats
-        total={stats.total}
-        active={stats.active}
-        completed={stats.completed}
-      />
+      <div className="mb-5">
+        <TodoStats
+          total={stats.total}
+          active={stats.active}
+          completed={stats.completed}
+        />
+      </div>
+
       {filteredTasks.length ? (
         filteredTasks.map((task) => (
           <div key={task.id}>
@@ -73,6 +84,7 @@ export function MainTodoList() {
               onDelete={remove}
               onEdit={edit}
               onToggle={toggle}
+              statsVisible={itemStatsVisible}
             />
           </div>
         ))
