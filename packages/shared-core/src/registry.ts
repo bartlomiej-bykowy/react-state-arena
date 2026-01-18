@@ -14,11 +14,11 @@ type ListStats = {
 };
 
 type Registry = {
-  list: ListStats;
+  lists: Map<string, ListStats>;
   items: Map<string, ItemStats>;
 };
 
 export const registry: Registry = {
-  list: { renders: 0, timing: { lastMs: 0, totalMs: 0 } },
+  lists: new Map<string, ListStats>(),
   items: new Map<string, ItemStats>()
 };

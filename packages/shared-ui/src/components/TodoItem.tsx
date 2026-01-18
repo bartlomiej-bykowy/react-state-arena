@@ -1,12 +1,18 @@
 import { memo, useEffect, useLayoutEffect, useRef, useState } from "react";
 import type { KeyboardEvent, MouseEvent } from "react";
 
-import { type Todo, useHighlight, useItemStats } from "@packages/shared-core";
+import {
+  ScopeKey,
+  type Todo,
+  useHighlight,
+  useItemStats
+} from "@packages/shared-core";
 
 export type TodoItemProps = {
   task: Todo;
   readonly?: boolean;
   statsVisible: boolean;
+  scope: ScopeKey;
   onToggle?: (id: string) => void;
   onEdit?: (id: string, text: string) => void;
   onDelete?: (id: string) => void;
@@ -16,12 +22,13 @@ export const TodoItem = memo(function TodoItem({
   task,
   readonly,
   statsVisible,
+  scope,
   onToggle,
   onEdit,
   onDelete
 }: TodoItemProps) {
   const [isEditing, setIsEditing] = useState(false);
-  const itemStats = useItemStats(task.id);
+  const itemStats = useItemStats(task.id, scope);
   itemStats.startTiming();
   const rendersCountRef = useRef<HTMLSpanElement>(null);
   const renderTimesRef = useRef<HTMLSpanElement>(null);

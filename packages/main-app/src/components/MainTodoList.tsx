@@ -1,7 +1,7 @@
 import { TododListEmptyState, TodoItem, TodoStats } from "@packages/shared-ui";
 import { initialTasks } from "../initialTasks";
 import { useTodoMainState } from "../hooks/useTodoMainState";
-import { useHighlight, useListStats } from "@packages/shared-core";
+import { ScopeKey, useHighlight, useListStats } from "@packages/shared-core";
 import { useLayoutEffect, useRef } from "react";
 import { TodoActions } from "./TodoActions";
 import { TodoOptions } from "./TodoOptions";
@@ -10,7 +10,8 @@ import { TodoFilters } from "./TodoFilters";
 import { TodoAddItem } from "./TodoAddItem";
 
 export function MainTodoList() {
-  const listStats = useListStats();
+  const scope: ScopeKey = "main";
+  const listStats = useListStats(scope);
   const {
     filteredTasks,
     filter,
@@ -76,6 +77,7 @@ export function MainTodoList() {
                 onEdit={edit}
                 onToggle={toggle}
                 statsVisible={itemStatsVisible}
+                scope={scope}
               />
             </div>
           ))

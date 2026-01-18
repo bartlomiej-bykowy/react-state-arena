@@ -19,8 +19,8 @@ export function createSignal<T>(initialValue: T) {
 
     subscribe(fn: Subscriber<T>) {
       subscribers.add(fn);
-      // for cases when subscribe() happens after increment() or set().
-      // Typically on initial render
+      // for cases when subscribe() happens after set().
+      // Typically on initial render.
       if (!subscribersHasRan) {
         subscribers.forEach((fn) => {
           fn(value);

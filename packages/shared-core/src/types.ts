@@ -21,3 +21,5 @@ export type BulkActionPayload =
   | { type: "toggleAll"; payload?: null }
   | { type: "removeCompleted"; payload?: null }
   | { type: "reset"; payload?: null };
+
+export type ScopeKey = "main" | "context" | "redux" | "zustand";
