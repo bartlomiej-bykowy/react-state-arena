@@ -1,7 +1,7 @@
 import { memo, useEffect, useLayoutEffect, useRef, useState } from "react";
 import type { KeyboardEvent, MouseEvent } from "react";
 
-import { type Todo, useItemStats } from "@packages/shared-core";
+import { type Todo, useHighlight, useItemStats } from "@packages/shared-core";
 
 export type TodoItemProps = {
   task: Todo;
@@ -25,6 +25,9 @@ export const TodoItem = memo(function TodoItem({
   itemStats.startTiming();
   const rendersCountRef = useRef<HTMLSpanElement>(null);
   const renderTimesRef = useRef<HTMLSpanElement>(null);
+  const itemRef = useRef<HTMLDivElement>(null);
+
+  useHighlight(itemRef);
 
   useLayoutEffect(() => {
     itemStats.recordRender();
@@ -76,7 +79,10 @@ export const TodoItem = memo(function TodoItem({
   };
 
   return (
-    <div className="relative px-3 py-2 w-full flex items-center gap-x-4 hover:bg-gray-100 rounded-md mb-4 shadow-[0_0_12px_0_rgba(66,68,90,0.25)] text-xs">
+    <div
+      className="relative px-3 py-2 w-full flex items-center gap-x-4 hover:bg-gray-100 rounded-md mb-4 shadow-[0_0_12px_0_rgba(66,68,90,0.25)] text-xs"
+      ref={itemRef}
+    >
       <div
         className={`flex absolute top-0 right-0 gap-x-3 items-center text-[10px] -translate-y-1/2 ${!statsVisible ? "invisible" : ""}`}
       >

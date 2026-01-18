@@ -80,10 +80,6 @@ export function useTodoMainState(
     [tasks]
   );
 
-  // const handleItemStatsVisibility = useCallback(() => {
-  //   setItemStatsVisible(!itemStatsVisible);
-  // }, []);
-
   useEffect(() => {
     visibleIdsRef.current = filteredTasks.map((ft) => ft.id);
   }, [filteredTasks]);
@@ -147,7 +143,6 @@ export function useTodoMainState(
     reset,
     removeCompleted,
     stats,
-    // handleItemStatsVisibility,
     itemStatsVisible,
     setItemStatsVisible
   };
