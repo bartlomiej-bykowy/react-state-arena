@@ -1,17 +1,13 @@
-import {
-  TodoAddItem,
-  TododListEmptyState,
-  TodoFilters,
-  TodoItem,
-  TodoSearch,
-  TodoStats
-} from "@packages/shared-ui/index";
+import { TododListEmptyState, TodoItem, TodoStats } from "@packages/shared-ui";
 import { initialTasks } from "../initialTasks";
 import { useTodoMainState } from "../hooks/useTodoMainState";
 import { useHighlight, useListStats } from "@packages/shared-core";
 import { useLayoutEffect, useRef } from "react";
 import { TodoActions } from "./TodoActions";
 import { TodoOptions } from "./TodoOptions";
+import { TodoSearch } from "./TodoSearch";
+import { TodoFilters } from "./TodoFilters";
+import { TodoAddItem } from "./TodoAddItem";
 
 export function MainTodoList() {
   const listStats = useListStats();
