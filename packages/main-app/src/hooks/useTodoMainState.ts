@@ -1,4 +1,5 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
+import { generateUUID } from "@packages/shared-core";
 import type { useListStats, Filter, Todo } from "@packages/shared-core";
 
 export function useTodoMainState(
@@ -10,15 +11,13 @@ export function useTodoMainState(
   const [searchQuery, setSearchQuery] = useState("");
   const [itemStatsVisible, setItemStatsVisible] = useState(false);
 
-  const visibleIdsRef = useRef<string[]>([]);
-
   const { startTiming } = listStatsHook;
 
   const add = useCallback(
     (text: string) => {
       startTiming();
       const newTask: Todo = {
-        id: crypto.randomUUID(),
+        id: generateUUID(),
         text,
         completed: false
       };
@@ -59,30 +58,40 @@ export function useTodoMainState(
     [startTiming]
   );
 
+  const changeFilter = useCallback(
+    (newFilter: Filter) => {
+      startTiming();
+      setFilter(newFilter);
+    },
+    [startTiming]
+  );
+
+  const search = useCallback(
+    (query: string) => {
+      startTiming();
+      setSearchQuery(query);
+    },
+    [startTiming]
+  );
+
   const filteredTasks = useMemo(() => {
+    const query = searchQuery.trim().toLowerCase();
     const filteredTasks = tasks.filter((task) => {
       if (filter === "active" && task.completed) return false;
       if (filter === "completed" && !task.completed) return false;
+      if (query && !task.text.toLowerCase().includes(query)) return false;
       return true;
     });
-    const query = searchQuery.trim().toLowerCase();
-    return filteredTasks.filter((task) =>
-      task.text.toLowerCase().includes(query)
-    );
+
+    return filteredTasks;
   }, [tasks, filter, searchQuery]);
 
-  const stats = useMemo(
-    () => ({
-      total: tasks.length,
-      active: tasks.filter((task) => !task.completed).length,
-      completed: tasks.filter((task) => task.completed).length
-    }),
-    [tasks]
-  );
-
-  useEffect(() => {
-    visibleIdsRef.current = filteredTasks.map((ft) => ft.id);
-  }, [filteredTasks]);
+  const stats = useMemo(() => {
+    let active = 0;
+    let completed = 0;
+    for (const task of tasks) task.completed ? completed++ : active++;
+    return { total: tasks.length, active, completed };
+  }, [tasks]);
 
   // BULK ACTIONS
 
@@ -131,6 +140,8 @@ export function useTodoMainState(
   return {
     filteredTasks,
     filter,
+    changeFilter,
+    search,
     add,
     addMany,
     edit,
@@ -138,8 +149,6 @@ export function useTodoMainState(
     removeMany,
     toggle,
     toggleMany,
-    setFilter,
-    setSearchQuery,
     reset,
     removeCompleted,
     stats,

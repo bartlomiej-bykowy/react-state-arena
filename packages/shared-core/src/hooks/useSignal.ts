@@ -7,7 +7,7 @@ type Signal<T> = {
 };
 
 export function useSignal<T>(signal: Signal<T>) {
-  const [value, setValue] = useState(signal.get());
+  const [value, setValue] = useState(() => signal.get());
 
   useEffect(() => {
     return signal.subscribe(setValue);

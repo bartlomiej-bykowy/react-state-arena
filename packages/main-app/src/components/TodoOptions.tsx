@@ -22,17 +22,16 @@ export function TodoOptions({ onChange, value }: TodoOptionsProps) {
           type="checkbox"
           id="show-items-stats"
           checked={value}
-          onChange={(e) => handleChange(e)}
+          onChange={handleChange}
         />
       </div>
       <div className="flex gap-x-2 items-center">
-        <label htmlFor="highlight-renders">Highligh rendered items</label>
+        <label htmlFor="highlight-renders">Highlight rendered items</label>
         <input
           type="checkbox"
           id="highlight-renders"
-          // checked={value}
           defaultChecked={highlightRenders}
-          onChange={toggleHighlightRenders}
+          onChange={(e) => toggleHighlightRenders(e.target.checked)}
         />
       </div>
     </div>

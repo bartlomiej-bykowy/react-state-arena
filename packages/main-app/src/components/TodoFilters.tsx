@@ -20,7 +20,7 @@ export function TodoFilters({
   };
 
   return (
-    <div className="flex mb-4 item-center">
+    <div className="flex items-center mb-4">
       <label
         htmlFor="task-type-select"
         className="flex items-center whitespace-nowrap"
@@ -31,7 +31,7 @@ export function TodoFilters({
         name="task-type-select"
         id="task-type-select"
         disabled={readonly}
-        onChange={(e) => handleChange(e)}
+        onChange={handleChange}
         value={activeFilter}
         className="px-3 py-2 ml-2 rounded-md border border-gray-400"
       >

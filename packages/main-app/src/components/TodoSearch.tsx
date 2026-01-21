@@ -1,4 +1,4 @@
-import { useRef, type ChangeEvent, type FormEvent } from "react";
+import { useRef, type ChangeEvent } from "react";
 
 export type TodoSearchProps = {
   readonly?: boolean;
@@ -13,16 +13,13 @@ export function TodoSearch({ readonly, onSearch }: TodoSearchProps) {
     onSearch?.(e.target.value);
   };
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-    if (readonly) return;
-    e.preventDefault();
-    onSearch?.(inputRef.current?.value || "");
-  };
-
   return (
-    <form className="overflow-hidden relative mb-4" onSubmit={handleSubmit}>
+    <form
+      className="overflow-hidden relative mb-4"
+      onSubmit={(e) => e.preventDefault()}
+    >
       <label htmlFor="task-search-input" className="sr-only">
-        Search for a taks
+        Search for a task
       </label>
       <input
         type="text"
@@ -34,14 +31,9 @@ export function TodoSearch({ readonly, onSearch }: TodoSearchProps) {
         className="py-2 pr-12 pl-3 rounded-md border border-gray-400 focus:border-purple-600"
         ref={inputRef}
       />
-      <button
-        type="submit"
-        title="Search"
-        disabled={readonly}
-        className="flex absolute top-0 right-0 justify-center items-center w-8 h-8 bg-transparent cursor-pointer disabled:cursor-not-allowed"
-      >
+      <span className="flex absolute top-0 right-0 justify-center items-center w-8 h-8 bg-transparent">
         🔎
-      </button>
+      </span>
     </form>
   );
 }

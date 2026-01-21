@@ -1,17 +1,22 @@
-import { TododListEmptyState, TodoItem, TodoStats } from "@packages/shared-ui";
+import { TodoListEmptyState, TodoItem, TodoStats } from "@packages/shared-ui";
 import { initialTasks } from "../initialTasks";
 import { useTodoMainState } from "../hooks/useTodoMainState";
-import { ScopeKey, useHighlight, useListStats } from "@packages/shared-core";
-import { useLayoutEffect, useRef } from "react";
+import {
+  useHighlight,
+  useListStats,
+  type ScopeKey
+} from "@packages/shared-core";
+import { useRef } from "react";
 import { TodoActions } from "./TodoActions";
 import { TodoOptions } from "./TodoOptions";
 import { TodoSearch } from "./TodoSearch";
 import { TodoFilters } from "./TodoFilters";
 import { TodoAddItem } from "./TodoAddItem";
 
+const SCOPE: ScopeKey = "main";
+
 export function MainTodoList() {
-  const scope: ScopeKey = "main";
-  const listStats = useListStats(scope);
+  const listStats = useListStats(SCOPE);
   const {
     filteredTasks,
     filter,
@@ -23,8 +28,8 @@ export function MainTodoList() {
     removeCompleted,
     toggle,
     toggleMany,
-    setFilter,
-    setSearchQuery,
+    changeFilter,
+    search,
     reset,
     itemStatsVisible,
     setItemStatsVisible,
@@ -34,18 +39,11 @@ export function MainTodoList() {
   const listRef = useRef<HTMLDivElement>(null);
   useHighlight(listRef);
 
-  listStats.startTiming();
-
-  useLayoutEffect(() => {
-    listStats.recordRender();
-    listStats.endTiming();
-  });
-
   return (
     <>
       <div className="flex flex-wrap gap-x-4 items-center text-xs">
-        <TodoSearch onSearch={setSearchQuery} />
-        <TodoFilters activeFilter={filter} onChange={setFilter} />
+        <TodoSearch onSearch={search} />
+        <TodoFilters activeFilter={filter} onChange={changeFilter} />
         <TodoOptions onChange={setItemStatsVisible} value={itemStatsVisible} />
         <TodoActions
           visibleTaskIds={filteredTasks.map((t) => t.id)}
@@ -77,12 +75,12 @@ export function MainTodoList() {
                 onEdit={edit}
                 onToggle={toggle}
                 statsVisible={itemStatsVisible}
-                scope={scope}
+                scope={SCOPE}
               />
             </div>
           ))
         ) : (
-          <TododListEmptyState />
+          <TodoListEmptyState />
         )}
       </div>
     </>

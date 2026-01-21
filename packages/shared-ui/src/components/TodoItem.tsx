@@ -1,11 +1,11 @@
-import { memo, useEffect, useLayoutEffect, useRef, useState } from "react";
+import { memo, useLayoutEffect, useRef, useState } from "react";
 import type { KeyboardEvent, MouseEvent } from "react";
 
 import {
-  ScopeKey,
-  type Todo,
   useHighlight,
-  useItemStats
+  useItemStats,
+  type ScopeKey,
+  type Todo
 } from "@packages/shared-core";
 
 export type TodoItemProps = {
@@ -29,7 +29,6 @@ export const TodoItem = memo(function TodoItem({
 }: TodoItemProps) {
   const [isEditing, setIsEditing] = useState(false);
   const itemStats = useItemStats(task.id, scope);
-  itemStats.startTiming();
   const rendersCountRef = useRef<HTMLSpanElement>(null);
   const renderTimesRef = useRef<HTMLSpanElement>(null);
   const itemRef = useRef<HTMLDivElement>(null);
@@ -37,18 +36,13 @@ export const TodoItem = memo(function TodoItem({
   useHighlight(itemRef);
 
   useLayoutEffect(() => {
-    itemStats.recordRender();
-    itemStats.endTiming();
+    if (statsVisible) {
+      const { renders, timing } = itemStats.stats!;
 
-    const { renders, timing } = itemStats.stats!;
-
-    rendersCountRef.current!.textContent = renders.toString();
-    renderTimesRef.current!.textContent = `Render time: last = ${timing.lastMs.toFixed(2)}ms • total = ${timing.totalMs.toFixed(2)}ms`;
+      rendersCountRef.current!.textContent = renders.toString();
+      renderTimesRef.current!.textContent = `Render time: last = ${timing.lastMs.toFixed(2)}ms • total = ${timing.totalMs.toFixed(2)}ms`;
+    }
   });
-
-  useEffect(() => {
-    return () => itemStats.removeItem();
-  }, []);
 
   const handleToggle = () => {
     if (readonly) return;
@@ -104,7 +98,7 @@ export const TodoItem = memo(function TodoItem({
       </div>
 
       <label htmlFor={`task-${task.id}-checkbox`} className="sr-only">
-        Mark the task as {task.completed ? "to do" : "completed"}
+        Mark as {task.completed ? "not completed" : "completed"}
       </label>
       <input
         type="checkbox"
@@ -114,10 +108,7 @@ export const TodoItem = memo(function TodoItem({
         disabled={readonly}
       />
       {!isEditing ? (
-        <p
-          className={`${task.completed ? "line-through text-gray-500" : ""}`}
-          aria-live="polite"
-        >
+        <p className={`${task.completed ? "line-through text-gray-500" : ""}`}>
           {task.text}
         </p>
       ) : (
@@ -142,6 +133,7 @@ export const TodoItem = memo(function TodoItem({
         {!task.completed && !isEditing && (
           <button
             title="Edit"
+            aria-label="Edit"
             className={`w-7 h-7 flex items-center justify-center ${task.completed ? "cursor-not-allowed" : "cursor-pointer"}`}
             onClick={(e) => handleEdit(e)}
             disabled={readonly || task.completed}
@@ -151,6 +143,7 @@ export const TodoItem = memo(function TodoItem({
         )}
         <button
           title="Delete"
+          aria-label="Delete"
           className="flex justify-center items-center w-7 h-7 cursor-pointer"
           onClick={(e) => handleDelete(e)}
           disabled={readonly}

@@ -1,3 +1,4 @@
+import { generateUUID } from "./generateUUID";
 import type { Todo } from "./types";
 
 export function generateTodos(count: number): Todo[] {
@@ -5,7 +6,7 @@ export function generateTodos(count: number): Todo[] {
 
   for (let i = 1; i <= count; i++) {
     todos.push({
-      id: crypto.randomUUID(),
+      id: generateUUID(),
       text: `Generated Task ${i}`,
       completed: false
     });

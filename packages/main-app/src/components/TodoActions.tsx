@@ -63,9 +63,8 @@ export function TodoActions({
         <input
           id="number-of-tasks"
           type="number"
-          placeholder="100"
           value={numOfTasks}
-          min={1}
+          min={0}
           onChange={(e) =>
             setNumOfTasks(
               Number(e.target.value) < 1 ? 1 : Number(e.target.value)

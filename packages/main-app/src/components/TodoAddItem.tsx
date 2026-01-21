@@ -10,10 +10,11 @@ export function TodoAddItem({ onSave }: TodoAddItemProps) {
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const form = e.target as HTMLFormElement;
-    const inputValue = inputRef?.current?.value || "";
+    const inputValue = inputRef.current?.value || "";
     if (inputValue.trim() === "") return;
     onSave?.(inputValue);
     form.reset();
+    inputRef.current?.focus();
   };
 
   return (
@@ -29,6 +30,7 @@ export function TodoAddItem({ onSave }: TodoAddItemProps) {
           placeholder="Enter task name"
           className="flex-1 px-3 py-2 rounded-md border border-gray-400"
           ref={inputRef}
+          autoComplete="off"
         />
         <button
           type="submit"

@@ -1,5 +1,5 @@
 export let highlightRenders = false;
 
-export function toggleHighlightRenders() {
-  highlightRenders = !highlightRenders;
+export function toggleHighlightRenders(value: boolean) {
+  highlightRenders = value;
 }

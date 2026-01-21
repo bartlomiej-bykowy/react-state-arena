@@ -11,6 +11,7 @@ export function createSignal<T>(initialValue: T) {
     },
 
     set(newValue: T) {
+      if (Object.is(value, newValue)) return;
       value = newValue;
       subscribers.forEach((fn) => {
         fn(value);
