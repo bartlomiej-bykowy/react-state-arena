@@ -1,7 +1,8 @@
 import { TodoListEmptyState, TodoItem, TodoStats } from "@packages/shared-ui";
-import { initialTasks } from "../initialTasks";
+
 import { useTodoMainState } from "../hooks/useTodoMainState";
 import {
+  initialTasks,
   useHighlight,
   useListStats,
   type ScopeKey

@@ -4,6 +4,7 @@ export { useItemStats } from "./src/hooks/useItemStats";
 export { useSignal } from "./src/hooks/useSignal";
 export { generateTodos } from "./src/generateTodos";
 export { generateUUID } from "./src/generateUUID";
+export { initialTasks } from "./src/initialTasks";
 export * from "./src/signal";
 export * from "./src/metricSignals";
 export * from "./src/types";

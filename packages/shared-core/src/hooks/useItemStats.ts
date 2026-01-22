@@ -27,7 +27,7 @@ export function useItemStats(id: string, scope: ScopeKey) {
     const timing = entryRef.current!.timing;
     timing.lastMs = delta;
     timing.totalMs += delta;
-
+    // total lastMs is reseted during list's commit phase (check useLayoutEffect in useListStats hook)
     totalRef.current!.timing.lastMs += delta;
     totalRef.current!.timing.totalMs += delta;
 
