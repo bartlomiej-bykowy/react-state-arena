@@ -1,29 +1,35 @@
-import { generateUUID, type Todo } from "@packages/shared-core";
+import { generateUUID } from "./generateUUID";
+import type { Todo } from "./types";
 
 export const initialTasks: Todo[] = [
   {
     id: generateUUID(),
     text: "Buy groceries",
-    completed: false
+    completed: false,
+    editing: false
   },
   {
     id: generateUUID(),
     text: "Clean the kitchen",
-    completed: false
+    completed: false,
+    editing: false
   },
   {
     id: generateUUID(),
     text: "Prepare meeting notes",
-    completed: false
+    completed: false,
+    editing: false
   },
   {
     id: generateUUID(),
     text: "Walk the dog",
-    completed: false
+    completed: false,
+    editing: false
   },
   {
     id: generateUUID(),
     text: "Reply to emails",
-    completed: false
+    completed: false,
+    editing: false
   }
 ];

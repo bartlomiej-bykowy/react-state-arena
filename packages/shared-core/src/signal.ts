@@ -1,32 +1,51 @@
+import type { ScopeKey } from "./types";
+
 export type Subscriber<T> = (value: T) => void;
 
+const scopes: ScopeKey[] = ["main", "context", "redux", "zustand"];
+
 export function createSignal<T>(initialValue: T) {
-  let value = initialValue;
-  const subscribers = new Set<Subscriber<T>>();
-  let subscribersHasRan = false;
+  const valueMap = new Map<ScopeKey, T>(
+    scopes.map((scope) => [scope, initialValue])
+  );
+  const subscribersMap = new Map<ScopeKey, Set<Subscriber<T>>>(
+    scopes.map((scopes) => [scopes, new Set<Subscriber<T>>()])
+  );
+
+  const subscribersForScopeHasRan: { [K in ScopeKey]: boolean } = {
+    main: false,
+    context: false,
+    redux: false,
+    zustand: false
+  };
 
   return {
-    get() {
-      return value;
+    get(scope: ScopeKey) {
+      return valueMap.get(scope)!;
     },
 
-    set(newValue: T) {
+    set(scope: ScopeKey, newValue: T) {
+      const value = valueMap.get(scope)!;
       if (Object.is(value, newValue)) return;
-      value = newValue;
+
+      valueMap.set(scope, newValue);
+      const subscribers = subscribersMap.get(scope)!;
       subscribers.forEach((fn) => {
-        fn(value);
+        fn(newValue);
       });
     },
 
-    subscribe(fn: Subscriber<T>) {
+    subscribe(scope: ScopeKey, fn: Subscriber<T>) {
+      const subscribers = subscribersMap.get(scope)!;
       subscribers.add(fn);
       // for cases when subscribe() happens after set().
       // Typically on initial render.
-      if (!subscribersHasRan) {
+      if (!subscribersForScopeHasRan[scope]) {
+        const value = valueMap.get(scope)!;
         subscribers.forEach((fn) => {
           fn(value);
         });
-        subscribersHasRan = true;
+        subscribersForScopeHasRan[scope] = true;
       }
       return () => subscribers.delete(fn);
     }

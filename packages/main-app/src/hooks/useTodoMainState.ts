@@ -1,6 +1,7 @@
 import { useCallback, useMemo, useState } from "react";
 import { generateUUID } from "@packages/shared-core";
 import type { useListStats, Filter, Todo } from "@packages/shared-core";
+import { dispatchTodoAction } from "../utils/dispatchTodoAction";
 
 export function useTodoMainState(
   initialState: Todo[],
@@ -19,9 +20,11 @@ export function useTodoMainState(
       const newTask: Todo = {
         id: generateUUID(),
         text,
-        completed: false
+        completed: false,
+        editing: false
       };
       setTasks((oldTasks) => [newTask, ...oldTasks]);
+      dispatchTodoAction({ type: "add", payload: { task: newTask } });
     },
     [startTiming]
   );
@@ -30,11 +33,28 @@ export function useTodoMainState(
     (taskId: string) => {
       startTiming();
       setTasks((oldTasks) => oldTasks.filter((task) => task.id !== taskId));
+      dispatchTodoAction({ type: "remove", payload: { id: taskId } });
     },
     [startTiming]
   );
 
   const edit = useCallback(
+    (taskId: string, value: boolean) => {
+      startTiming();
+      setTasks((oldTasks) => {
+        return oldTasks.map((task) =>
+          task.id !== taskId ? task : { ...task, editing: value }
+        );
+      });
+      dispatchTodoAction({
+        type: "edit",
+        payload: { id: taskId, editing: value }
+      });
+    },
+    [startTiming]
+  );
+
+  const update = useCallback(
     (taskId: string, text: string) => {
       startTiming();
       setTasks((oldTasks) => {
@@ -42,6 +62,7 @@ export function useTodoMainState(
           task.id !== taskId ? task : { ...task, text }
         );
       });
+      dispatchTodoAction({ type: "update", payload: { id: taskId, text } });
     },
     [startTiming]
   );
@@ -54,6 +75,17 @@ export function useTodoMainState(
           task.id !== taskId ? task : { ...task, completed: !task.completed }
         );
       });
+      dispatchTodoAction({ type: "toggle", payload: { id: taskId } });
+    },
+    [startTiming]
+  );
+
+  const changeStatsVisibility = useCallback(
+    (visible: boolean) => {
+      startTiming();
+
+      setItemStatsVisible(visible);
+      dispatchTodoAction({ type: "showStats", payload: { show: visible } });
     },
     [startTiming]
   );
@@ -62,6 +94,10 @@ export function useTodoMainState(
     (newFilter: Filter) => {
       startTiming();
       setFilter(newFilter);
+      dispatchTodoAction({
+        type: "filter",
+        payload: { query: searchQuery, filter: newFilter }
+      });
     },
     [startTiming]
   );
@@ -70,6 +106,10 @@ export function useTodoMainState(
     (query: string) => {
       startTiming();
       setSearchQuery(query);
+      dispatchTodoAction({
+        type: "filter",
+        payload: { query, filter }
+      });
     },
     [startTiming]
   );
@@ -98,7 +138,8 @@ export function useTodoMainState(
   const addMany = useCallback(
     (todos: Todo[]) => {
       startTiming();
-      setTasks((oldTasks) => [...oldTasks, ...todos]);
+      setTasks((oldTasks) => [...todos, ...oldTasks]);
+      dispatchTodoAction({ type: "addMany", payload: { tasks: todos } });
     },
     [startTiming]
   );
@@ -108,6 +149,7 @@ export function useTodoMainState(
       startTiming();
 
       setTasks((oldTasks) => oldTasks.filter((task) => !ids.has(task.id)));
+      dispatchTodoAction({ type: "removeMany", payload: { ids } });
     },
     [startTiming]
   );
@@ -121,6 +163,7 @@ export function useTodoMainState(
           ids.has(task.id) ? { ...task, completed: !task.completed } : task
         )
       );
+      dispatchTodoAction({ type: "toggleMany", payload: { ids } });
     },
     [startTiming]
   );
@@ -130,11 +173,14 @@ export function useTodoMainState(
     setTasks(initialState);
     setFilter("all");
     setSearchQuery("");
+
+    dispatchTodoAction({ type: "reset", payload: { tasks: initialState } });
   }, [startTiming, initialState]);
 
   const removeCompleted = useCallback(() => {
     startTiming();
     setTasks((oldTasks) => oldTasks.filter((task) => !task.completed));
+    dispatchTodoAction({ type: "removeCompleted" });
   }, [startTiming]);
 
   return {
@@ -145,6 +191,7 @@ export function useTodoMainState(
     add,
     addMany,
     edit,
+    update,
     remove,
     removeMany,
     toggle,
@@ -153,6 +200,6 @@ export function useTodoMainState(
     removeCompleted,
     stats,
     itemStatsVisible,
-    setItemStatsVisible
+    changeStatsVisibility
   };
 }

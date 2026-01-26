@@ -1,42 +1,95 @@
 import type { Reducer } from "react";
-import type { TodoAction, TodoState } from "./types";
-import type { Todo } from "@packages/shared-core";
+import type { TodoState } from "./types";
+import type { TodoAction } from "@packages/shared-core";
 
 export const reducer: Reducer<TodoState, TodoAction> = (state, action) => {
   switch (action.type) {
     case "add":
-      return [...state, action.payload.task];
+      return {
+        ...state,
+        tasks: [action.payload.task, ...state.tasks]
+      };
     case "edit":
-      return state.map((task) => {
-        if (task.id === action.payload.id) {
-          return { ...task, text: action.payload.text };
-        }
-        return task;
-      });
+      return {
+        ...state,
+        tasks: state.tasks.map((task) => {
+          if (task.id === action.payload.id) {
+            return {
+              ...task,
+              editing: action.payload.editing
+            };
+          }
+          return task;
+        })
+      };
+    case "update":
+      return {
+        ...state,
+        tasks: state.tasks.map((task) => {
+          if (task.id === action.payload.id) {
+            return { ...task, text: action.payload.text };
+          }
+          return task;
+        })
+      };
     case "toggle":
-      return state.map((task) => {
-        if (task.id === action.payload.id) {
-          return { ...task, completed: !task.completed };
-        }
-        return task;
-      });
+      return {
+        ...state,
+        tasks: state.tasks.map((task) => {
+          if (task.id === action.payload.id) {
+            return { ...task, completed: !task.completed };
+          }
+          return task;
+        })
+      };
     case "remove":
-      return state.filter((task) => task.id !== action.payload.id);
+      return {
+        ...state,
+        tasks: state.tasks.filter((task) => task.id !== action.payload.id)
+      };
+    case "filter":
+      return {
+        ...state,
+        filter: action.payload.filter,
+        searchQuery: action.payload.query
+      };
     case "addMany":
-      return [...state, action.payload.tasks] as Todo[];
+      return {
+        ...state,
+        tasks: [...action.payload.tasks, ...state.tasks]
+      };
     case "toggleMany":
-      return state.map((task) => {
-        if (action.payload.ids.includes(task.id)) {
-          return { ...task, completed: !task.completed };
-        }
-        return task;
-      });
+      return {
+        ...state,
+        tasks: state.tasks.map((task) => {
+          if (action.payload.ids.has(task.id)) {
+            return { ...task, completed: !task.completed };
+          }
+          return task;
+        })
+      };
     case "removeMany":
-      return state.filter((task) => !action.payload.ids.includes(task.id));
+      return {
+        ...state,
+        tasks: state.tasks.filter((task) => !action.payload.ids.has(task.id))
+      };
     case "removeCompleted":
-      return state.filter((task) => !task.completed);
+      return {
+        ...state,
+        tasks: state.tasks.filter((task) => !task.completed)
+      };
     case "reset":
-      return [...action.payload.tasks] as Todo[];
+      return {
+        tasks: [...action.payload.tasks],
+        filter: "all",
+        searchQuery: "",
+        showStatsPerItem: state.showStatsPerItem
+      };
+    case "showStats":
+      return {
+        ...state,
+        showStatsPerItem: action.payload.show
+      };
     default:
       return state;
   }

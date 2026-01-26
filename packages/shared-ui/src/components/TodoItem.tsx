@@ -1,7 +1,8 @@
-import { memo, useLayoutEffect, useRef, useState } from "react";
+import { memo, useLayoutEffect, useRef } from "react";
 import type { KeyboardEvent, MouseEvent } from "react";
 
 import {
+  itemStatsUiRefreshSignal,
   useHighlight,
   useItemStats,
   type ScopeKey,
@@ -14,7 +15,8 @@ export type TodoItemProps = {
   statsVisible: boolean;
   scope: ScopeKey;
   onToggle?: (id: string) => void;
-  onEdit?: (id: string, text: string) => void;
+  onUpdate?: (id: string, text: string) => void;
+  onEdit?: (id: string, val: boolean) => void;
   onDelete?: (id: string) => void;
 };
 
@@ -24,10 +26,10 @@ export const TodoItem = memo(function TodoItem({
   statsVisible,
   scope,
   onToggle,
+  onUpdate,
   onEdit,
   onDelete
 }: TodoItemProps) {
-  const [isEditing, setIsEditing] = useState(false);
   const itemStats = useItemStats(task.id, scope);
   const rendersCountRef = useRef<HTMLSpanElement>(null);
   const renderTimesRef = useRef<HTMLSpanElement>(null);
@@ -35,10 +37,13 @@ export const TodoItem = memo(function TodoItem({
 
   useHighlight(itemRef);
 
+  if (statsVisible) {
+    itemStatsUiRefreshSignal.subscribe;
+  }
+
   useLayoutEffect(() => {
     if (statsVisible) {
       const { renders, timing } = itemStats.stats!;
-
       rendersCountRef.current!.textContent = renders.toString();
       renderTimesRef.current!.textContent = `Render time: last = ${timing.lastMs.toFixed(2)}ms • total = ${timing.totalMs.toFixed(2)}ms`;
     }
@@ -54,7 +59,7 @@ export const TodoItem = memo(function TodoItem({
     if (readonly || task.completed) return;
 
     e.preventDefault();
-    setIsEditing(true);
+    onEdit?.(task.id, true);
   };
 
   const handleKeyPress = (e: KeyboardEvent<HTMLInputElement>) => {
@@ -64,11 +69,11 @@ export const TodoItem = memo(function TodoItem({
     if (e.key === "Enter") {
       const input = e.target as HTMLInputElement;
       if (input.value.trim() === "") return;
-      onEdit?.(task.id, input.value);
-      setIsEditing(false);
+      onUpdate?.(task.id, input.value);
+      onEdit?.(task.id, false);
     }
     if (e.key === "Escape") {
-      setIsEditing(false);
+      onEdit?.(task.id, false);
     }
   };
 
@@ -81,7 +86,7 @@ export const TodoItem = memo(function TodoItem({
 
   return (
     <div
-      className="relative px-3 py-2 w-full flex items-center gap-x-4 hover:bg-gray-100 rounded-md mb-4 shadow-[0_0_12px_0_rgba(66,68,90,0.25)] text-xs"
+      className={`relative px-3 py-2 w-full flex items-center gap-x-4 ${readonly ? "" : "hover:bg-gray-100"} rounded-md mb-4 shadow-[0_0_12px_0_rgba(66,68,90,0.25)] text-xs`}
       ref={itemRef}
     >
       <div
@@ -106,8 +111,9 @@ export const TodoItem = memo(function TodoItem({
         id={`task-${task.id}-checkbox`}
         onChange={handleToggle}
         disabled={readonly}
+        className={readonly ? "cursor-not-allowed" : ""}
       />
-      {!isEditing ? (
+      {!task.editing ? (
         <p className={`${task.completed ? "line-through text-gray-500" : ""}`}>
           {task.text}
         </p>
@@ -123,34 +129,37 @@ export const TodoItem = memo(function TodoItem({
             onKeyDown={handleKeyPress}
             className="px-2 py-1 w-full rounded-md border border-gray-400"
             autoFocus
+            disabled={readonly}
           />
           <p className="text-[10px] text-gray-600 whitespace-nowrap">
             (Press Enter to accept, press Esc to cancel)
           </p>
         </div>
       )}
-      <div className="flex gap-x-2 items-center ml-auto">
-        {!task.completed && !isEditing && (
+      {!readonly && (
+        <div className="flex gap-x-2 items-center ml-auto">
+          {!task.completed && !task.editing && (
+            <button
+              title="Edit"
+              aria-label="Edit"
+              className={`w-7 h-7 flex items-center justify-center ${task.completed ? "cursor-not-allowed" : "cursor-pointer"}`}
+              onClick={(e) => handleEdit(e)}
+              disabled={readonly || task.completed}
+            >
+              🖊️
+            </button>
+          )}
           <button
-            title="Edit"
-            aria-label="Edit"
-            className={`w-7 h-7 flex items-center justify-center ${task.completed ? "cursor-not-allowed" : "cursor-pointer"}`}
-            onClick={(e) => handleEdit(e)}
-            disabled={readonly || task.completed}
+            title="Delete"
+            aria-label="Delete"
+            className="flex justify-center items-center w-7 h-7 cursor-pointer"
+            onClick={(e) => handleDelete(e)}
+            disabled={readonly}
           >
-            🖊️
+            🗑️
           </button>
-        )}
-        <button
-          title="Delete"
-          aria-label="Delete"
-          className="flex justify-center items-center w-7 h-7 cursor-pointer"
-          onClick={(e) => handleDelete(e)}
-          disabled={readonly}
-        >
-          🗑️
-        </button>
-      </div>
+        </div>
+      )}
     </div>
   );
 });

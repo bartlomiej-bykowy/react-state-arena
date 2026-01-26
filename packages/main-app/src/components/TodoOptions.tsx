@@ -1,11 +1,13 @@
 import {
   highlightRenders,
-  toggleHighlightRenders
+  measuringEnabled,
+  setHighlightRenders,
+  setMeasuringEnabled
 } from "@packages/shared-core";
-import type { ChangeEvent, Dispatch, SetStateAction } from "react";
+import type { ChangeEvent } from "react";
 
 type TodoOptionsProps = {
-  onChange: Dispatch<SetStateAction<boolean>>;
+  onChange: (val: boolean) => void;
   value: boolean;
 };
 
@@ -31,7 +33,16 @@ export function TodoOptions({ onChange, value }: TodoOptionsProps) {
           type="checkbox"
           id="highlight-renders"
           defaultChecked={highlightRenders}
-          onChange={(e) => toggleHighlightRenders(e.target.checked)}
+          onChange={(e) => setHighlightRenders(e.target.checked)}
+        />
+      </div>
+      <div className="flex gap-x-2 items-center">
+        <label htmlFor="enable-measurments">Enable measurments</label>
+        <input
+          type="checkbox"
+          id="enable-measurments"
+          defaultChecked={measuringEnabled}
+          onChange={(e) => setMeasuringEnabled(e.target.checked)}
         />
       </div>
     </div>

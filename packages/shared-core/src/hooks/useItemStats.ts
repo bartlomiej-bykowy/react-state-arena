@@ -3,10 +3,14 @@ import { itemRendersSignal, itemTimingSignal } from "../metricSignals";
 import { registry } from "../registry";
 import type { ScopeKey } from "../types";
 import { ensureRecordInRegistry } from "../ensureRecordInRegistry";
+import { measuringEnabled } from "../todoOptions";
 
 export function useItemStats(id: string, scope: ScopeKey) {
   const startRender = useRef<number | null>(null);
-  startRender.current = performance.now();
+
+  if (measuringEnabled) {
+    startRender.current = performance.now();
+  }
 
   const key = `${scope}:${id}`;
 
@@ -17,7 +21,7 @@ export function useItemStats(id: string, scope: ScopeKey) {
     entryRef.current!.renders++;
     totalRef.current!.renders++;
 
-    itemRendersSignal.set(totalRef.current!.renders);
+    itemRendersSignal.set(scope, totalRef.current!.renders);
   };
 
   const endTiming = () => {
@@ -31,8 +35,21 @@ export function useItemStats(id: string, scope: ScopeKey) {
     totalRef.current!.timing.lastMs += delta;
     totalRef.current!.timing.totalMs += delta;
 
-    itemTimingSignal.set({ ...totalRef.current!.timing });
+    itemTimingSignal.set(scope, { ...totalRef.current!.timing });
     startRender.current = null;
+  };
+
+  const resetItemMetrics = () => {
+    startRender.current = null;
+    registry.items.forEach((_, key) => {
+      registry.items.set(key, {
+        renders: 0,
+        timing: { lastMs: 0, totalMs: 0 }
+      });
+    });
+
+    itemRendersSignal.set(scope, totalRef.current!.renders);
+    itemTimingSignal.set(scope, { ...totalRef.current!.timing });
   };
 
   useEffect(() => {
@@ -42,11 +59,13 @@ export function useItemStats(id: string, scope: ScopeKey) {
   }, [key]);
 
   useLayoutEffect(() => {
+    if (!measuringEnabled) return;
     recordRender();
     endTiming();
   });
 
   return {
-    stats: registry.items.get(key)
+    stats: registry.items.get(key),
+    resetItemMetrics
   };
 }

@@ -3,20 +3,22 @@ import {
   itemTimingSignal,
   listRendersSignal,
   listTimingSignal,
-  useSignal
+  useSignal,
+  type ScopeKey
 } from "@packages/shared-core";
 
 export type TodoStatsProps = {
   total: number;
   active: number;
   completed: number;
+  scope: ScopeKey;
 };
 
-export function TodoStats({ total, active, completed }: TodoStatsProps) {
-  const listRenders = useSignal(listRendersSignal);
-  const listTiming = useSignal(listTimingSignal);
-  const itemRenders = useSignal(itemRendersSignal);
-  const itemTiming = useSignal(itemTimingSignal);
+export function TodoStats({ total, active, completed, scope }: TodoStatsProps) {
+  const listRenders = useSignal(scope, listRendersSignal);
+  const listTiming = useSignal(scope, listTimingSignal);
+  const itemRenders = useSignal(scope, itemRendersSignal);
+  const itemTiming = useSignal(scope, itemTimingSignal);
 
   return (
     <div className="flex justify-between px-4 py-3 space-y-1 font-mono text-xs text-gray-600 border border-red-500">

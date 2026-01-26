@@ -3,16 +3,6 @@ export type Timing = {
   totalMs: number;
 };
 
-// export type ItemStats = {
-//   renders: number;
-//   timing: Timing;
-// };
-
-// export type ListStats = {
-//   renders: number;
-//   timing: Timing;
-// };
-
 export type Stats = {
   renders: number;
   timing: Timing;

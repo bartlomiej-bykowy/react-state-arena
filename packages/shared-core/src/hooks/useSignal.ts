@@ -1,17 +1,18 @@
 import { useEffect, useState } from "react";
 import type { Subscriber } from "../signal";
+import type { ScopeKey } from "../types";
 
 type Signal<T> = {
-  get(): T;
-  subscribe(fn: Subscriber<T>): () => void;
+  get(scope: ScopeKey): T;
+  subscribe(scope: ScopeKey, fn: Subscriber<T>): () => void;
 };
 
-export function useSignal<T>(signal: Signal<T>) {
-  const [value, setValue] = useState(() => signal.get());
+export function useSignal<T>(scope: ScopeKey, signal: Signal<T>) {
+  const [value, setValue] = useState(() => signal.get(scope));
 
   useEffect(() => {
-    return signal.subscribe(setValue);
-  }, [signal]);
+    return signal.subscribe(scope, setValue);
+  }, [scope, signal]);
 
   return value;
 }

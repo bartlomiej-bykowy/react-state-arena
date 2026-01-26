@@ -7,12 +7,14 @@ import {
 } from "@packages/shared-core";
 import { useRef } from "react";
 import { useContextTodoState } from "../hooks/useContextTodoState";
+import { useTodoEvents } from "../hooks/useTodoEvent";
 
 const SCOPE: ScopeKey = "context";
 
 export function ContextTodoList() {
   const listStats = useListStats(SCOPE);
-  const { filteredTasks, itemStatsVisible, stats } =
+  useTodoEvents(listStats);
+  const { filteredTasks, stats, showStatsPerItem } =
     useContextTodoState(listStats);
 
   const listRef = useRef<HTMLDivElement>(null);
@@ -25,6 +27,7 @@ export function ContextTodoList() {
           total={stats.total}
           active={stats.active}
           completed={stats.completed}
+          scope={SCOPE}
         />
       </div>
 
@@ -35,7 +38,7 @@ export function ContextTodoList() {
               <TodoItem
                 task={task}
                 readonly={true}
-                statsVisible={itemStatsVisible}
+                statsVisible={showStatsPerItem}
                 scope={SCOPE}
               />
             </div>

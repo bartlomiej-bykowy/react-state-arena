@@ -24,6 +24,7 @@ export function MainTodoList() {
     add,
     addMany,
     edit,
+    update,
     remove,
     removeMany,
     removeCompleted,
@@ -33,7 +34,7 @@ export function MainTodoList() {
     search,
     reset,
     itemStatsVisible,
-    setItemStatsVisible,
+    changeStatsVisibility,
     stats
   } = useTodoMainState(initialTasks, listStats);
 
@@ -45,7 +46,10 @@ export function MainTodoList() {
       <div className="flex flex-wrap gap-x-4 items-center text-xs">
         <TodoSearch onSearch={search} />
         <TodoFilters activeFilter={filter} onChange={changeFilter} />
-        <TodoOptions onChange={setItemStatsVisible} value={itemStatsVisible} />
+        <TodoOptions
+          onChange={changeStatsVisibility}
+          value={itemStatsVisible}
+        />
         <TodoActions
           visibleTaskIds={filteredTasks.map((t) => t.id)}
           addMany={addMany}
@@ -63,6 +67,7 @@ export function MainTodoList() {
           total={stats.total}
           active={stats.active}
           completed={stats.completed}
+          scope={SCOPE}
         />
       </div>
 
@@ -74,6 +79,7 @@ export function MainTodoList() {
                 task={task}
                 onDelete={remove}
                 onEdit={edit}
+                onUpdate={update}
                 onToggle={toggle}
                 statsVisible={itemStatsVisible}
                 scope={SCOPE}

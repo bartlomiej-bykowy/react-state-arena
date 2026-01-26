@@ -1,20 +1,26 @@
-import type { Todo } from "@packages/shared-core";
-import { createContext, useReducer, type ActionDispatch } from "react";
+import type { Todo, TodoAction } from "@packages/shared-core";
+import { createContext, useReducer, type Dispatch } from "react";
 import { reducer } from "./reducer";
-import type { TodoAction } from "./types";
+import type { TodoState } from "./types";
 
 type TodoProviderProps = {
   initialTasks: Todo[];
   children: React.ReactNode;
 };
 
-export const TodoStateContext = createContext<Todo[] | null>(null);
-export const TodoDispatchContext = createContext<ActionDispatch<
-  [action: TodoAction]
-> | null>(null);
+export const TodoStateContext = createContext<TodoState | null>(null);
+export const TodoDispatchContext = createContext<Dispatch<TodoAction> | null>(
+  null
+);
 
 export function TodoProvider({ initialTasks, children }: TodoProviderProps) {
-  const [state, dispatch] = useReducer(reducer, initialTasks);
+  const initialState: TodoState = {
+    tasks: initialTasks,
+    filter: "all",
+    searchQuery: "",
+    showStatsPerItem: false
+  };
+  const [state, dispatch] = useReducer(reducer, initialState);
 
   return (
     <TodoDispatchContext value={dispatch}>

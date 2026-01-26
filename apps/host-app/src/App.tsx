@@ -1,7 +1,7 @@
-// import React from "react";
+import { lazy, Suspense } from "react";
 import MainApp from "@packages/main-app/src/App";
 
-// const ContextRemote = React.lazy(() => import("context_app/App"));
+const ContextRemote = lazy(() => import("context_app/App"));
 // const ReduxRemote = React.lazy(() => import("redux_app/App")) || null;
 // const ZustandRemote = React.lazy(() => import("zustand_app/App")) || null;
 
@@ -15,12 +15,12 @@ export default function App() {
         <MainApp />
       </section>
 
-      {/* <section className="p-4 bg-gray-100 border">
+      <section className="p-4 bg-gray-100 border">
         <h2 className="font-semibold">Context Remote</h2>
-        <React.Suspense fallback="Loading Context Remote...">
+        <Suspense fallback="Loading Context Remote...">
           <ContextRemote />
-        </React.Suspense>
-      </section> */}
+        </Suspense>
+      </section>
 
       {/* <section className="p-4 bg-gray-100 border">
         <h2 className="font-semibold">Redux Remote</h2>
