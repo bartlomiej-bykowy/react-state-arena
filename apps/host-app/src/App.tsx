@@ -2,7 +2,7 @@ import { lazy, Suspense } from "react";
 import MainApp from "@packages/main-app/src/App";
 
 const ContextRemote = lazy(() => import("context_app/App"));
-// const ReduxRemote = React.lazy(() => import("redux_app/App")) || null;
+const ReduxRemote = lazy(() => import("redux_app/App"));
 // const ZustandRemote = React.lazy(() => import("zustand_app/App")) || null;
 
 export default function App() {
@@ -22,12 +22,12 @@ export default function App() {
         </Suspense>
       </section>
 
-      {/* <section className="p-4 bg-gray-100 border">
+      <section className="p-4 bg-gray-100 border">
         <h2 className="font-semibold">Redux Remote</h2>
-        <React.Suspense fallback="Loading Redux Remote...">
+        <Suspense fallback="Loading Redux Remote...">
           <ReduxRemote />
-        </React.Suspense>
-      </section> */}
+        </Suspense>
+      </section>
 
       {/* <section className="p-4 bg-gray-100 border">
         <h2 className="font-semibold">Zustand Remote</h2>

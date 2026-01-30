@@ -6,15 +6,15 @@ import {
   type ScopeKey
 } from "@packages/shared-core";
 import { useRef } from "react";
-import { useContextTodoState } from "../hooks/useContextTodoState";
+import { useReduxTodoState } from "../hooks/useReduxTodoState";
 import { useTodoEvents } from "../hooks/useTodoEvents";
 
-const SCOPE: ScopeKey = "context";
+const SCOPE: ScopeKey = "redux";
 
-export function ContextTodoList() {
+export function ReduxTodoList() {
   const listStats = useListStats(SCOPE);
   useTodoEvents(listStats);
-  const { filteredTasks, stats, showStatsPerItem } = useContextTodoState();
+  const { filteredTasks, stats, showStatsPerItem } = useReduxTodoState();
 
   const listRef = useRef<HTMLDivElement>(null);
   useHighlight(listRef);

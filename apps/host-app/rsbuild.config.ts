@@ -24,8 +24,8 @@ export default defineConfig({
     options: {
       name: "host_app",
       remotes: {
-        context_app: "context_app@http://localhost:3001/remoteEntry.js"
-        // redux_app: "redux_app@http://localhost:3002/remoteEntry.js",
+        context_app: "context_app@http://localhost:3001/remoteEntry.js",
+        redux_app: "redux_app@http://localhost:3002/remoteEntry.js"
         // zustand_app: "zustand_app@http://localhost:3003/remoteEntry.js"
       },
       shared: {

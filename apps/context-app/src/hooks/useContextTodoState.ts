@@ -1,11 +1,7 @@
-import type { useListStats } from "@packages/shared-core";
-import { useTodoDispatch } from "./useTodoDispatch";
 import { useTodoState } from "./useTodoState";
 import { useMemo } from "react";
 
-export function useContextTodoState(
-  listStats: ReturnType<typeof useListStats>
-) {
+export function useContextTodoState() {
   const { tasks, filter, searchQuery, showStatsPerItem } = useTodoState();
 
   const filteredTasks = useMemo(() => {

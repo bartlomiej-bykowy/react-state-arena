@@ -11,8 +11,10 @@
   "dependencies": {
     "@packages/shared-core": "workspace:*",
     "@packages/shared-ui": "workspace:*",
+    "@reduxjs/toolkit": "^2.11.2",
     "react": "^19.2.1",
-    "react-dom": "^19.2.1"
+    "react-dom": "^19.2.1",
+    "react-redux": "^9.2.0"
   },
   "devDependencies": {
     "@rsbuild/core": "^1.6.12",

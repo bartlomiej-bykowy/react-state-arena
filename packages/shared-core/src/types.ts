@@ -37,6 +37,6 @@ export type TodoAction =
   | { type: "addMany"; payload: { tasks: Todo[] } }
   | { type: "toggleMany"; payload: { ids: Set<string> } }
   | { type: "removeMany"; payload: { ids: Set<string> } }
-  | { type: "removeCompleted" }
+  | { type: "removeCompleted"; payload?: null }
   | { type: "reset"; payload: { tasks: Todo[] } }
   | { type: "showStats"; payload: { show: boolean } };
