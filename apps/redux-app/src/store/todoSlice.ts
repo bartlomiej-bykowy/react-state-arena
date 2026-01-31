@@ -69,7 +69,7 @@ const todoSlice = createSlice({
     filter(state, action: PayloadAction<ActionType["filter"]>) {
       return {
         ...state,
-        filter: action.payload.filter,
+        activeFilter: action.payload.filter,
         searchQuery: action.payload.query
       };
     },
@@ -105,7 +105,7 @@ const todoSlice = createSlice({
     reset(state, action: PayloadAction<ActionType["reset"]>) {
       return {
         tasks: [...action.payload.tasks],
-        filter: "all",
+        activeFilter: "all",
         searchQuery: "",
         showStatsPerItem: state.showStatsPerItem
       };

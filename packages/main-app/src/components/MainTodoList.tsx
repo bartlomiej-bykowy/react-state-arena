@@ -20,7 +20,7 @@ export function MainTodoList() {
   const listStats = useListStats(SCOPE);
   const {
     filteredTasks,
-    filter,
+    activeFilter,
     add,
     addMany,
     edit,
@@ -45,7 +45,7 @@ export function MainTodoList() {
     <>
       <div className="flex flex-wrap gap-x-4 items-center text-xs">
         <TodoSearch onSearch={search} />
-        <TodoFilters activeFilter={filter} onChange={changeFilter} />
+        <TodoFilters activeFilter={activeFilter} onChange={changeFilter} />
         <TodoOptions
           onChange={changeStatsVisibility}
           value={itemStatsVisible}

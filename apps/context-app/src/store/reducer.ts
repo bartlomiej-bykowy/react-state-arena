@@ -1,8 +1,7 @@
 import type { Reducer } from "react";
-import type { TodoState } from "./types";
-import type { TodoAction } from "@packages/shared-core";
+import type { TodoAction, TodoStoreState } from "@packages/shared-core";
 
-export const reducer: Reducer<TodoState, TodoAction> = (state, action) => {
+export const reducer: Reducer<TodoStoreState, TodoAction> = (state, action) => {
   switch (action.type) {
     case "add":
       return {
@@ -50,7 +49,7 @@ export const reducer: Reducer<TodoState, TodoAction> = (state, action) => {
     case "filter":
       return {
         ...state,
-        filter: action.payload.filter,
+        activeFilter: action.payload.filter,
         searchQuery: action.payload.query
       };
     case "addMany":
@@ -81,7 +80,7 @@ export const reducer: Reducer<TodoState, TodoAction> = (state, action) => {
     case "reset":
       return {
         tasks: [...action.payload.tasks],
-        filter: "all",
+        activeFilter: "all",
         searchQuery: "",
         showStatsPerItem: state.showStatsPerItem
       };

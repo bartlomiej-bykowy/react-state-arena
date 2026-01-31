@@ -8,7 +8,7 @@ export function useTodoMainState(
   listStatsHook: ReturnType<typeof useListStats>
 ) {
   const [tasks, setTasks] = useState<Todo[]>(initialState);
-  const [filter, setFilter] = useState<Filter>("all");
+  const [activeFilter, setActiveFilter] = useState<Filter>("all");
   const [searchQuery, setSearchQuery] = useState("");
   const [itemStatsVisible, setItemStatsVisible] = useState(false);
 
@@ -93,7 +93,7 @@ export function useTodoMainState(
   const changeFilter = useCallback(
     (newFilter: Filter) => {
       startTiming();
-      setFilter(newFilter);
+      setActiveFilter(newFilter);
       dispatchTodoAction({
         type: "filter",
         payload: { query: searchQuery, filter: newFilter }
@@ -108,7 +108,7 @@ export function useTodoMainState(
       setSearchQuery(query);
       dispatchTodoAction({
         type: "filter",
-        payload: { query, filter }
+        payload: { query, filter: activeFilter }
       });
     },
     [startTiming]
@@ -117,14 +117,14 @@ export function useTodoMainState(
   const filteredTasks = useMemo(() => {
     const query = searchQuery.trim().toLowerCase();
     const filteredTasks = tasks.filter((task) => {
-      if (filter === "active" && task.completed) return false;
-      if (filter === "completed" && !task.completed) return false;
+      if (activeFilter === "active" && task.completed) return false;
+      if (activeFilter === "completed" && !task.completed) return false;
       if (query && !task.text.toLowerCase().includes(query)) return false;
       return true;
     });
 
     return filteredTasks;
-  }, [tasks, filter, searchQuery]);
+  }, [tasks, activeFilter, searchQuery]);
 
   const stats = useMemo(() => {
     let active = 0;
@@ -171,7 +171,7 @@ export function useTodoMainState(
   const reset = useCallback(() => {
     startTiming();
     setTasks(initialState);
-    setFilter("all");
+    setActiveFilter("all");
     setSearchQuery("");
 
     dispatchTodoAction({ type: "reset", payload: { tasks: initialState } });
@@ -185,7 +185,7 @@ export function useTodoMainState(
 
   return {
     filteredTasks,
-    filter,
+    activeFilter,
     changeFilter,
     search,
     add,

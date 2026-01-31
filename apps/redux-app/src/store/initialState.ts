@@ -1,9 +1,8 @@
-import { initialTasks } from "@packages/shared-core";
-import type { TodoStore } from "./types";
+import { initialTasks, type TodoStoreState } from "@packages/shared-core";
 
-export const initialState: TodoStore = {
+export const initialState: TodoStoreState = {
   tasks: [...initialTasks],
-  filter: "all",
+  activeFilter: "all",
   searchQuery: "",
   showStatsPerItem: false
 };

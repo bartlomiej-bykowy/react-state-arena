@@ -40,3 +40,10 @@ export type TodoAction =
   | { type: "removeCompleted"; payload?: null }
   | { type: "reset"; payload: { tasks: Todo[] } }
   | { type: "showStats"; payload: { show: boolean } };
+
+export type TodoStoreState = {
+  tasks: Todo[];
+  activeFilter: Filter;
+  searchQuery: string;
+  showStatsPerItem: boolean;
+};

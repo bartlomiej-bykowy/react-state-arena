@@ -1,8 +1,11 @@
-import { useTodoState } from "./useTodoState";
 import { useMemo } from "react";
+import { useStore } from "../store/store";
 
-export function useContextTodoState() {
-  const { tasks, activeFilter, searchQuery, showStatsPerItem } = useTodoState();
+export function useZustandTodoState() {
+  const tasks = useStore((state) => state.tasks);
+  const searchQuery = useStore((state) => state.searchQuery);
+  const activeFilter = useStore((state) => state.activeFilter);
+  const showStatsPerItem = useStore((state) => state.showStatsPerItem);
 
   const filteredTasks = useMemo(() => {
     const query = searchQuery.trim().toLowerCase();
