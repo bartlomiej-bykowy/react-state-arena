@@ -6,6 +6,8 @@ export function useZustandTodoState() {
   const searchQuery = useStore((state) => state.searchQuery);
   const activeFilter = useStore((state) => state.activeFilter);
   const showStatsPerItem = useStore((state) => state.showStatsPerItem);
+  const capEnabled = useStore((state) => state.capEnabled);
+  const capNumber = useStore((state) => state.capNumber);
 
   const filteredTasks = useMemo(() => {
     const query = searchQuery.trim().toLowerCase();
@@ -16,8 +18,8 @@ export function useZustandTodoState() {
       return true;
     });
 
-    return filteredTasks;
-  }, [tasks, activeFilter, searchQuery]);
+    return capEnabled ? filteredTasks.slice(0, capNumber) : filteredTasks;
+  }, [tasks, activeFilter, searchQuery, capEnabled, capNumber]);
 
   const stats = useMemo(() => {
     let active = 0;

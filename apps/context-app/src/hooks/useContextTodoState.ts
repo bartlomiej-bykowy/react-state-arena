@@ -2,7 +2,14 @@ import { useTodoState } from "./useTodoState";
 import { useMemo } from "react";
 
 export function useContextTodoState() {
-  const { tasks, activeFilter, searchQuery, showStatsPerItem } = useTodoState();
+  const {
+    tasks,
+    activeFilter,
+    searchQuery,
+    showStatsPerItem,
+    capEnabled,
+    capNumber
+  } = useTodoState();
 
   const filteredTasks = useMemo(() => {
     const query = searchQuery.trim().toLowerCase();
@@ -13,8 +20,8 @@ export function useContextTodoState() {
       return true;
     });
 
-    return filteredTasks;
-  }, [tasks, activeFilter, searchQuery]);
+    return capEnabled ? filteredTasks.slice(0, capNumber) : filteredTasks;
+  }, [tasks, activeFilter, searchQuery, capEnabled, capEnabled]);
 
   const stats = useMemo(() => {
     let active = 0;

@@ -1,11 +1,13 @@
-import { useCallback, useLayoutEffect, useRef } from "react";
-import { listRendersSignal, listTimingSignal } from "../metricSignals";
+import { useCallback, useEffect, useLayoutEffect, useRef } from "react";
+import { refreshUISignal } from "../signals";
 import { registry } from "../registry";
 import type { ScopeKey } from "../types";
 import { ensureRecordInRegistry } from "../ensureRecordInRegistry";
 import { measuringEnabled } from "../todoOptions";
+// import { useSignal } from "./useSignal";
 
 export function useListStats(scope: ScopeKey) {
+  // useSignal(scope, metricsResetSignal);
   const renderStart = useRef<number | null>(null);
 
   if (measuringEnabled) {
@@ -13,10 +15,11 @@ export function useListStats(scope: ScopeKey) {
   }
 
   const entryRef = useRef(ensureRecordInRegistry("lists", scope));
+  ensureRecordInRegistry("itemsTotal", scope);
 
   const recordRender = () => {
     entryRef.current!.renders++;
-    listRendersSignal.set(scope, entryRef.current!.renders);
+    refreshUISignal.runSubscribers(scope);
   };
 
   const startTiming = useCallback(() => {
@@ -33,7 +36,7 @@ export function useListStats(scope: ScopeKey) {
     timing.lastMs = delta;
     timing.totalMs += delta;
 
-    listTimingSignal.set(scope, { ...timing });
+    refreshUISignal.runSubscribers(scope);
     renderStart.current = null;
   };
 
@@ -43,16 +46,22 @@ export function useListStats(scope: ScopeKey) {
     total.timing.lastMs = 0;
   };
 
+  useEffect(() => {
+    return () => {
+      registry.lists.delete(scope);
+      registry.itemsTotal.delete(scope);
+    };
+  }, [scope]);
+
   useLayoutEffect(() => {
     if (!measuringEnabled) return;
-
     recordRender();
     endTiming();
-    resetLastRenderTotalTime();
   });
 
   return {
     stats: registry.lists.get(scope),
-    startTiming
+    startTiming,
+    resetLastRenderTotalTime
   };
 }

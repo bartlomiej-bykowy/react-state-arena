@@ -4,18 +4,20 @@ import {
   setHighlightRenders,
   setMeasuringEnabled
 } from "@packages/shared-core";
-import type { ChangeEvent } from "react";
 
 type TodoOptionsProps = {
-  onChange: (val: boolean) => void;
-  value: boolean;
+  onStatsVisibilityChange: (val: boolean) => void;
+  statsVisible: boolean;
+  onCapEnabledChange: (val: boolean) => void;
+  capEnabled: boolean;
 };
 
-export function TodoOptions({ onChange, value }: TodoOptionsProps) {
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    onChange(e.target.checked);
-  };
-
+export function TodoOptions({
+  onStatsVisibilityChange,
+  statsVisible,
+  onCapEnabledChange,
+  capEnabled
+}: TodoOptionsProps) {
   return (
     <div className="flex gap-x-4 items-center mb-4">
       <div className="flex gap-x-2 items-center">
@@ -23,8 +25,8 @@ export function TodoOptions({ onChange, value }: TodoOptionsProps) {
         <input
           type="checkbox"
           id="show-items-stats"
-          checked={value}
-          onChange={handleChange}
+          checked={statsVisible}
+          onChange={(e) => onStatsVisibilityChange(e.target.checked)}
         />
       </div>
       <div className="flex gap-x-2 items-center">
@@ -43,6 +45,15 @@ export function TodoOptions({ onChange, value }: TodoOptionsProps) {
           id="enable-measurments"
           defaultChecked={measuringEnabled}
           onChange={(e) => setMeasuringEnabled(e.target.checked)}
+        />
+      </div>
+      <div className="flex gap-x-2 items-center">
+        <label htmlFor="enable-tasks-cap">Set limit of rendered tasks</label>
+        <input
+          type="checkbox"
+          id="enable-tasks-cap"
+          defaultChecked={capEnabled}
+          onChange={(e) => onCapEnabledChange(e.target.checked)}
         />
       </div>
     </div>

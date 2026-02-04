@@ -1,4 +1,8 @@
-import { initialTasks, type TodoStoreState } from "@packages/shared-core";
+import {
+  initialTasks,
+  TASKS_CAP,
+  type TodoStoreState
+} from "@packages/shared-core";
 import { create } from "zustand";
 import type { StoreMethods } from "./types";
 
@@ -8,6 +12,8 @@ export const useStore = create<TodoStoreState & StoreMethods>(
     activeFilter: "all",
     searchQuery: "",
     showStatsPerItem: false,
+    capEnabled: false,
+    capNumber: TASKS_CAP,
     // actions
     add: (payload) => {
       set((state) => ({
@@ -64,19 +70,25 @@ export const useStore = create<TodoStoreState & StoreMethods>(
       }));
     },
     toggleMany: (payload) => {
-      set((state) => ({
-        tasks: state.tasks.map((task) => {
-          if (payload.ids.has(task.id)) {
-            return { ...task, completed: !task.completed };
-          }
-          return task;
-        })
-      }));
+      set((state) => {
+        const ids = new Set(payload.ids);
+        return {
+          tasks: state.tasks.map((task) => {
+            if (ids.has(task.id)) {
+              return { ...task, completed: !task.completed };
+            }
+            return task;
+          })
+        };
+      });
     },
     removeMany: (payload) => {
-      set((state) => ({
-        tasks: state.tasks.filter((task) => !payload.ids.has(task.id))
-      }));
+      set((state) => {
+        const ids = new Set(payload.ids);
+        return {
+          tasks: state.tasks.filter((task) => !ids.has(task.id))
+        };
+      });
     },
     removeCompleted: () => {
       set((state) => ({
@@ -89,6 +101,12 @@ export const useStore = create<TodoStoreState & StoreMethods>(
     showStats: (payload) => {
       set(() => ({
         showStatsPerItem: payload.show
+      }));
+    },
+    cap: (payload) => {
+      set(() => ({
+        capEnabled: payload.enable,
+        capNumber: payload.capNumber
       }));
     },
     // action dispatcher
@@ -129,6 +147,9 @@ export const useStore = create<TodoStoreState & StoreMethods>(
           break;
         case "showStats":
           get().showStats(action.payload);
+          break;
+        case "cap":
+          get().cap(action.payload);
           break;
         default:
           return;

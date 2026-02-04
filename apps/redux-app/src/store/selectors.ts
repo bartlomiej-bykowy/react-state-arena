@@ -6,17 +6,26 @@ export const selectItemStatsSetting = (state: RootState) =>
   state.todo.showStatsPerItem;
 const selectFilterSetting = (state: RootState) => state.todo.activeFilter;
 const selectSearchQuery = (state: RootState) => state.todo.searchQuery;
+const selectTasksCapMode = (state: RootState) => state.todo.capEnabled;
+const selectTasksCapNumber = (state: RootState) => state.todo.capNumber;
 
 export const selectFilteredTasks = createSelector(
-  [selectAllTodos, selectFilterSetting, selectSearchQuery],
-  (tasks, activeFilter, searchQuery) => {
+  [
+    selectAllTodos,
+    selectFilterSetting,
+    selectSearchQuery,
+    selectTasksCapMode,
+    selectTasksCapNumber
+  ],
+  (tasks, activeFilter, searchQuery, capEnabled, capNumber) => {
     const query = searchQuery.trim().toLowerCase();
-    return tasks.filter((task) => {
+    const filteredTasks = tasks.filter((task) => {
       if (activeFilter === "active" && task.completed) return false;
       if (activeFilter === "completed" && !task.completed) return false;
       if (query && !task.text.toLowerCase().includes(query)) return false;
       return true;
     });
+    return capEnabled ? filteredTasks.slice(0, capNumber) : filteredTasks;
   }
 );
 

@@ -2,7 +2,6 @@ import { memo, useLayoutEffect, useRef } from "react";
 import type { KeyboardEvent, MouseEvent } from "react";
 
 import {
-  itemStatsUiRefreshSignal,
   useHighlight,
   useItemStats,
   type ScopeKey,
@@ -36,10 +35,6 @@ export const TodoItem = memo(function TodoItem({
   const itemRef = useRef<HTMLDivElement>(null);
 
   useHighlight(itemRef);
-
-  if (statsVisible) {
-    itemStatsUiRefreshSignal.subscribe;
-  }
 
   useLayoutEffect(() => {
     if (statsVisible) {

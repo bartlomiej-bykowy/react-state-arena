@@ -35,6 +35,10 @@ export function MainTodoList() {
     reset,
     itemStatsVisible,
     changeStatsVisibility,
+    changeCapEnabled,
+    capEnabled,
+    chageCapNumber,
+    capNumber,
     stats
   } = useTodoMainState(initialTasks, listStats);
 
@@ -47,8 +51,10 @@ export function MainTodoList() {
         <TodoSearch onSearch={search} />
         <TodoFilters activeFilter={activeFilter} onChange={changeFilter} />
         <TodoOptions
-          onChange={changeStatsVisibility}
-          value={itemStatsVisible}
+          onStatsVisibilityChange={changeStatsVisibility}
+          statsVisible={itemStatsVisible}
+          onCapEnabledChange={changeCapEnabled}
+          capEnabled={capEnabled}
         />
         <TodoActions
           visibleTaskIds={filteredTasks.map((t) => t.id)}
@@ -57,6 +63,9 @@ export function MainTodoList() {
           removeMany={removeMany}
           reset={reset}
           removeCompleted={removeCompleted}
+          onCapNumberChange={chageCapNumber}
+          capNumber={capNumber}
+          capEnabled={capEnabled}
         />
       </div>
       <div className="mb-5">
@@ -68,10 +77,10 @@ export function MainTodoList() {
           active={stats.active}
           completed={stats.completed}
           scope={SCOPE}
+          resetLastRenderTotalTime={listStats.resetLastRenderTotalTime}
         />
       </div>
-
-      <div ref={listRef}>
+      <div ref={listRef} className="max-h-[320px] overflow-y-auto -m-2.5 p-2.5">
         {filteredTasks.length ? (
           filteredTasks.map((task) => (
             <div key={task.id}>

@@ -1,5 +1,5 @@
 import { useCallback, useMemo, useState } from "react";
-import { generateUUID } from "@packages/shared-core";
+import { generateUUID, TASKS_CAP } from "@packages/shared-core";
 import type { useListStats, Filter, Todo } from "@packages/shared-core";
 import { dispatchTodoAction } from "../utils/dispatchTodoAction";
 
@@ -11,18 +11,20 @@ export function useTodoMainState(
   const [activeFilter, setActiveFilter] = useState<Filter>("all");
   const [searchQuery, setSearchQuery] = useState("");
   const [itemStatsVisible, setItemStatsVisible] = useState(false);
+  const [capEnabled, setCapEnabled] = useState(false);
+  const [capNumber, setCapNumber] = useState(TASKS_CAP);
 
   const { startTiming } = listStatsHook;
 
   const add = useCallback(
     (text: string) => {
-      startTiming();
       const newTask: Todo = {
         id: generateUUID(),
         text,
         completed: false,
         editing: false
       };
+      startTiming();
       setTasks((oldTasks) => [newTask, ...oldTasks]);
       dispatchTodoAction({ type: "add", payload: { task: newTask } });
     },
@@ -90,6 +92,27 @@ export function useTodoMainState(
     [startTiming]
   );
 
+  const changeCapEnabled = useCallback(
+    (enable: boolean) => {
+      startTiming();
+      setCapEnabled(enable);
+      dispatchTodoAction({ type: "cap", payload: { enable, capNumber } });
+    },
+    [startTiming]
+  );
+
+  const chageCapNumber = useCallback(
+    (num: number) => {
+      startTiming();
+      setCapNumber(num);
+      dispatchTodoAction({
+        type: "cap",
+        payload: { enable: capEnabled, capNumber: num }
+      });
+    },
+    [startTiming]
+  );
+
   const changeFilter = useCallback(
     (newFilter: Filter) => {
       startTiming();
@@ -123,8 +146,8 @@ export function useTodoMainState(
       return true;
     });
 
-    return filteredTasks;
-  }, [tasks, activeFilter, searchQuery]);
+    return capEnabled ? filteredTasks.slice(0, capNumber) : filteredTasks;
+  }, [tasks, activeFilter, searchQuery, capEnabled, capNumber]);
 
   const stats = useMemo(() => {
     let active = 0;
@@ -149,7 +172,7 @@ export function useTodoMainState(
       startTiming();
 
       setTasks((oldTasks) => oldTasks.filter((task) => !ids.has(task.id)));
-      dispatchTodoAction({ type: "removeMany", payload: { ids } });
+      dispatchTodoAction({ type: "removeMany", payload: { ids: [...ids] } });
     },
     [startTiming]
   );
@@ -163,7 +186,7 @@ export function useTodoMainState(
           ids.has(task.id) ? { ...task, completed: !task.completed } : task
         )
       );
-      dispatchTodoAction({ type: "toggleMany", payload: { ids } });
+      dispatchTodoAction({ type: "toggleMany", payload: { ids: [...ids] } });
     },
     [startTiming]
   );
@@ -173,6 +196,7 @@ export function useTodoMainState(
     setTasks(initialState);
     setActiveFilter("all");
     setSearchQuery("");
+    setCapNumber(TASKS_CAP);
 
     dispatchTodoAction({ type: "reset", payload: { tasks: initialState } });
   }, [startTiming, initialState]);
@@ -200,6 +224,10 @@ export function useTodoMainState(
     removeCompleted,
     stats,
     itemStatsVisible,
-    changeStatsVisibility
+    changeStatsVisibility,
+    changeCapEnabled,
+    capEnabled,
+    chageCapNumber,
+    capNumber
   };
 }

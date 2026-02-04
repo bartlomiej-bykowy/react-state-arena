@@ -13,7 +13,8 @@ import {
   showStats,
   toggle,
   toggleMany,
-  update
+  update,
+  setTasksCap
 } from "../store/todoSlice";
 
 export function useTodoEvents(listStats: ReturnType<typeof useListStats>) {
@@ -61,6 +62,8 @@ export function useTodoEvents(listStats: ReturnType<typeof useListStats>) {
         case "showStats":
           dispatch(showStats(payload));
           break;
+        case "cap":
+          dispatch(setTasksCap(payload));
       }
     };
 

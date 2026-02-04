@@ -1,4 +1,9 @@
-import type { Todo, TodoAction, TodoStoreState } from "@packages/shared-core";
+import {
+  TASKS_CAP,
+  type Todo,
+  type TodoAction,
+  type TodoStoreState
+} from "@packages/shared-core";
 import { createContext, useReducer, type Dispatch } from "react";
 import { reducer } from "./reducer";
 
@@ -17,7 +22,9 @@ export function TodoProvider({ initialTasks, children }: TodoProviderProps) {
     tasks: initialTasks,
     activeFilter: "all",
     searchQuery: "",
-    showStatsPerItem: false
+    showStatsPerItem: false,
+    capEnabled: false,
+    capNumber: TASKS_CAP
   };
   const [state, dispatch] = useReducer(reducer, initialState);
 

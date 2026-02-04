@@ -1,5 +1,5 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
-import type { TodoAction } from "@packages/shared-core";
+import { TASKS_CAP, type TodoAction } from "@packages/shared-core";
 import { initialState } from "./initialState";
 
 type ActionType = {
@@ -80,10 +80,11 @@ const todoSlice = createSlice({
       };
     },
     toggleMany(state, action: PayloadAction<ActionType["toggleMany"]>) {
+      const ids = new Set(action.payload.ids);
       return {
         ...state,
         tasks: state.tasks.map((task) => {
-          if (action.payload.ids.has(task.id)) {
+          if (ids.has(task.id)) {
             return { ...task, completed: !task.completed };
           }
           return task;
@@ -91,9 +92,10 @@ const todoSlice = createSlice({
       };
     },
     removeMany(state, action: PayloadAction<ActionType["removeMany"]>) {
+      const ids = new Set(action.payload.ids);
       return {
         ...state,
-        tasks: state.tasks.filter((task) => !action.payload.ids.has(task.id))
+        tasks: state.tasks.filter((task) => !ids.has(task.id))
       };
     },
     removeCompleted(state) {
@@ -107,13 +109,22 @@ const todoSlice = createSlice({
         tasks: [...action.payload.tasks],
         activeFilter: "all",
         searchQuery: "",
-        showStatsPerItem: state.showStatsPerItem
+        showStatsPerItem: state.showStatsPerItem,
+        capEnabled: state.capEnabled,
+        capNumber: TASKS_CAP
       };
     },
     showStats(state, action: PayloadAction<ActionType["showStats"]>) {
       return {
         ...state,
         showStatsPerItem: action.payload.show
+      };
+    },
+    setTasksCap(state, action: PayloadAction<ActionType["cap"]>) {
+      return {
+        ...state,
+        capEnabled: action.payload.enable,
+        capNumber: action.payload.capNumber
       };
     }
   }
@@ -131,7 +142,8 @@ export const {
   removeCompleted,
   removeMany,
   reset,
-  showStats
+  showStats,
+  setTasksCap
 } = todoSlice.actions;
 
 export const todoReducer = todoSlice.reducer;

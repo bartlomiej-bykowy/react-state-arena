@@ -1,5 +1,9 @@
 import type { Reducer } from "react";
-import type { TodoAction, TodoStoreState } from "@packages/shared-core";
+import {
+  TASKS_CAP,
+  type TodoStoreState,
+  type TodoAction
+} from "@packages/shared-core";
 
 export const reducer: Reducer<TodoStoreState, TodoAction> = (state, action) => {
   switch (action.type) {
@@ -57,21 +61,25 @@ export const reducer: Reducer<TodoStoreState, TodoAction> = (state, action) => {
         ...state,
         tasks: [...action.payload.tasks, ...state.tasks]
       };
-    case "toggleMany":
+    case "toggleMany": {
+      const ids = new Set(action.payload.ids);
       return {
         ...state,
         tasks: state.tasks.map((task) => {
-          if (action.payload.ids.has(task.id)) {
+          if (ids.has(task.id)) {
             return { ...task, completed: !task.completed };
           }
           return task;
         })
       };
-    case "removeMany":
+    }
+    case "removeMany": {
+      const ids = new Set(action.payload.ids);
       return {
         ...state,
-        tasks: state.tasks.filter((task) => !action.payload.ids.has(task.id))
+        tasks: state.tasks.filter((task) => !ids.has(task.id))
       };
+    }
     case "removeCompleted":
       return {
         ...state,
@@ -82,12 +90,20 @@ export const reducer: Reducer<TodoStoreState, TodoAction> = (state, action) => {
         tasks: [...action.payload.tasks],
         activeFilter: "all",
         searchQuery: "",
-        showStatsPerItem: state.showStatsPerItem
+        showStatsPerItem: state.showStatsPerItem,
+        capNumber: TASKS_CAP,
+        capEnabled: state.capEnabled
       };
     case "showStats":
       return {
         ...state,
         showStatsPerItem: action.payload.show
+      };
+    case "cap":
+      return {
+        ...state,
+        capEnabled: action.payload.enable,
+        capNumber: action.payload.capNumber
       };
     default:
       return state;

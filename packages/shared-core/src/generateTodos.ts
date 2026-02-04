@@ -8,7 +8,8 @@ export function generateTodos(count: number): Todo[] {
     todos.push({
       id: generateUUID(),
       text: `Generated Task ${i}`,
-      completed: false
+      completed: false,
+      editing: false
     });
   }
 

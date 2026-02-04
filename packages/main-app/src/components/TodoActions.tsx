@@ -1,4 +1,4 @@
-import { generateTodos, type Todo } from "@packages/shared-core";
+import { generateTodos, resetMetrics, type Todo } from "@packages/shared-core";
 import { useState } from "react";
 
 type TodoActionsProps = {
@@ -8,6 +8,9 @@ type TodoActionsProps = {
   removeMany: (ids: Set<string>) => void;
   reset: () => void;
   removeCompleted: () => void;
+  onCapNumberChange: (val: number) => void;
+  capNumber: number;
+  capEnabled: boolean;
 };
 
 const buttonStyles =
@@ -19,7 +22,10 @@ export function TodoActions({
   toggleMany,
   removeMany,
   reset,
-  removeCompleted
+  removeCompleted,
+  onCapNumberChange,
+  capNumber,
+  capEnabled
 }: TodoActionsProps) {
   const [numOfTasks, setNumOfTasks] = useState(10);
 
@@ -46,6 +52,23 @@ export function TodoActions({
 
   return (
     <div className="flex gap-x-3 items-center mb-4 whitespace-nowrap">
+      {capEnabled && (
+        <div className="flex gap-x-3 items-center">
+          <label htmlFor="tasks-render-limit">Limit rendered tasks to:</label>
+          <input
+            id="tasks-render-limit"
+            type="number"
+            value={capNumber}
+            min={1}
+            onChange={(e) =>
+              onCapNumberChange(
+                Number(e.target.value) < 1 ? 1 : Number(e.target.value)
+              )
+            }
+            className="max-w-[60px] px-3 py-2 rounded-md border border-gray-400 focus:border-purple-600"
+          />
+        </div>
+      )}
       <div className="flex gap-x-3 items-center p-2 rounded-md border border-gray-400 border-dashed">
         <button onClick={handleAddMany} className={buttonStyles}>
           Add
@@ -79,6 +102,9 @@ export function TodoActions({
       </button>
       <button onClick={removeCompleted} className={buttonStyles}>
         Remove completed
+      </button>
+      <button onClick={resetMetrics} className={buttonStyles}>
+        Reset metrics
       </button>
     </div>
   );
