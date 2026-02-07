@@ -27,7 +27,7 @@ export function ReduxTodoList() {
           active={stats.active}
           completed={stats.completed}
           scope={SCOPE}
-          resetLastRenderTotalTime={listStats.resetLastRenderTotalTime}
+          stats={listStats.stats}
         />
       </div>
 

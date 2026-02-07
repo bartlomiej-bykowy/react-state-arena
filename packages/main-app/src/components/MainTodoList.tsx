@@ -77,7 +77,7 @@ export function MainTodoList() {
           active={stats.active}
           completed={stats.completed}
           scope={SCOPE}
-          resetLastRenderTotalTime={listStats.resetLastRenderTotalTime}
+          stats={listStats.stats}
         />
       </div>
       <div ref={listRef} className="max-h-[320px] overflow-y-auto -m-2.5 p-2.5">

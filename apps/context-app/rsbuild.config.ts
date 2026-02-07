@@ -24,7 +24,6 @@ export default defineConfig({
         "./App": "./src/App.tsx"
       },
       shared: {
-        ...dependencies,
         react: {
           singleton: true,
           requiredVersion: dependencies.react,

@@ -4,10 +4,8 @@ import { registry } from "../registry";
 import type { ScopeKey } from "../types";
 import { ensureRecordInRegistry } from "../ensureRecordInRegistry";
 import { measuringEnabled } from "../todoOptions";
-// import { useSignal } from "./useSignal";
 
 export function useListStats(scope: ScopeKey) {
-  // useSignal(scope, metricsResetSignal);
   const renderStart = useRef<number | null>(null);
 
   if (measuringEnabled) {
@@ -15,16 +13,16 @@ export function useListStats(scope: ScopeKey) {
   }
 
   const entryRef = useRef(ensureRecordInRegistry("lists", scope));
-  ensureRecordInRegistry("itemsTotal", scope);
+  const totalRef = useRef(ensureRecordInRegistry("itemsTotal", scope));
 
   const recordRender = () => {
     entryRef.current!.renders++;
-    refreshUISignal.runSubscribers(scope);
   };
 
   const startTiming = useCallback(() => {
     if (!measuringEnabled) return;
 
+    totalRef.current.timing.lastMs = 0;
     renderStart.current = performance.now();
   }, []);
 
@@ -36,15 +34,16 @@ export function useListStats(scope: ScopeKey) {
     timing.lastMs = delta;
     timing.totalMs += delta;
 
-    refreshUISignal.runSubscribers(scope);
     renderStart.current = null;
   };
 
-  const resetLastRenderTotalTime = () => {
-    // we need to reset items' total timings from last render
-    const total = ensureRecordInRegistry("itemsTotal", scope);
-    total.timing.lastMs = 0;
-  };
+  useLayoutEffect(() => {
+    if (!measuringEnabled) return;
+
+    recordRender();
+    endTiming();
+    refreshUISignal.runSubscribers(scope);
+  });
 
   useEffect(() => {
     return () => {
@@ -53,15 +52,11 @@ export function useListStats(scope: ScopeKey) {
     };
   }, [scope]);
 
-  useLayoutEffect(() => {
-    if (!measuringEnabled) return;
-    recordRender();
-    endTiming();
-  });
-
   return {
-    stats: registry.lists.get(scope),
-    startTiming,
-    resetLastRenderTotalTime
+    stats: {
+      listStats: registry.lists.get(scope),
+      itemsStats: registry.itemsTotal.get(scope)
+    },
+    startTiming
   };
 }

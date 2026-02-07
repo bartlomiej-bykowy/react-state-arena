@@ -1,13 +1,10 @@
 import { useEffect, useLayoutEffect, useRef } from "react";
-import { refreshUISignal } from "../signals";
 import { registry } from "../registry";
 import type { ScopeKey } from "../types";
 import { ensureRecordInRegistry } from "../ensureRecordInRegistry";
 import { measuringEnabled } from "../todoOptions";
-// import { useSignal } from "./useSignal";
 
 export function useItemStats(id: string, scope: ScopeKey) {
-  // useSignal(scope, metricsResetSignal);
   const startRender = useRef<number | null>(null);
 
   if (measuringEnabled) {
@@ -22,8 +19,6 @@ export function useItemStats(id: string, scope: ScopeKey) {
   const recordRender = () => {
     entryRef.current!.renders++;
     totalRef.current!.renders++;
-
-    refreshUISignal.runSubscribers(scope);
   };
 
   const endTiming = () => {
@@ -33,11 +28,13 @@ export function useItemStats(id: string, scope: ScopeKey) {
     const timing = entryRef.current!.timing;
     timing.lastMs = delta;
     timing.totalMs += delta;
-    // total lastMs is reseted during list's commit phase (check useLayoutEffect in useListStats hook)
+    /** The lastMs field within totalRef is reset at the beginning of each
+     * action (see startTiming() in the useTodoList hook). Therefore,
+     * re-renders originating from non–task-related causes do not reset this
+     * property. */
     totalRef.current!.timing.lastMs += delta;
     totalRef.current!.timing.totalMs += delta;
 
-    refreshUISignal.runSubscribers(scope);
     startRender.current = null;
   };
 
