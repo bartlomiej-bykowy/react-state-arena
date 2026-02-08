@@ -39,7 +39,6 @@ export function useListStats(scope: ScopeKey) {
 
   useLayoutEffect(() => {
     if (!measuringEnabled) return;
-
     recordRender();
     endTiming();
     refreshUISignal.runSubscribers(scope);

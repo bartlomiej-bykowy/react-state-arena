@@ -48,14 +48,16 @@ export function MainTodoList() {
   return (
     <>
       <div className="flex flex-wrap gap-x-4 items-center text-xs">
-        <TodoSearch onSearch={search} />
-        <TodoFilters activeFilter={activeFilter} onChange={changeFilter} />
         <TodoOptions
           onStatsVisibilityChange={changeStatsVisibility}
           statsVisible={itemStatsVisible}
           onCapEnabledChange={changeCapEnabled}
           capEnabled={capEnabled}
         />
+        <div className="flex flex-wrap gap-x-4 items-center w-full">
+          <TodoSearch onSearch={search} />
+          <TodoFilters activeFilter={activeFilter} onChange={changeFilter} />
+        </div>
         <TodoActions
           visibleTaskIds={filteredTasks.map((t) => t.id)}
           addMany={addMany}

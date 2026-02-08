@@ -1,4 +1,5 @@
 import { generateTodos, resetMetrics, type Todo } from "@packages/shared-core";
+import { Button } from "@packages/shared-ui";
 import { useState } from "react";
 
 type TodoActionsProps = {
@@ -12,9 +13,6 @@ type TodoActionsProps = {
   capNumber: number;
   capEnabled: boolean;
 };
-
-const buttonStyles =
-  "px-3 py-2 rounded-md cursor-pointer text-white bg-blue-700";
 
 export function TodoActions({
   visibleTaskIds,
@@ -70,15 +68,9 @@ export function TodoActions({
         </div>
       )}
       <div className="flex gap-x-3 items-center p-2 rounded-md border border-gray-400 border-dashed">
-        <button onClick={handleAddMany} className={buttonStyles}>
-          Add
-        </button>
-        <button onClick={handleToggleMany} className={buttonStyles}>
-          Toggle
-        </button>
-        <button onClick={handleRemoveMany} className={buttonStyles}>
-          Remove
-        </button>
+        <Button onClick={handleAddMany}>Add</Button>
+        <Button onClick={handleToggleMany}>Toggle</Button>
+        <Button onClick={handleRemoveMany}>Remove</Button>
 
         <label htmlFor="number-of-tasks" className="sr-only">
           Set number of tasks
@@ -97,15 +89,9 @@ export function TodoActions({
         />
         <span>tasks</span>
       </div>
-      <button onClick={reset} className={buttonStyles}>
-        Reset
-      </button>
-      <button onClick={removeCompleted} className={buttonStyles}>
-        Remove completed
-      </button>
-      <button onClick={resetMetrics} className={buttonStyles}>
-        Reset metrics
-      </button>
+      <Button onClick={reset}>Reset</Button>
+      <Button onClick={removeCompleted}>Remove completed</Button>
+      <Button onClick={resetMetrics}>Reset metrics</Button>
     </div>
   );
 }

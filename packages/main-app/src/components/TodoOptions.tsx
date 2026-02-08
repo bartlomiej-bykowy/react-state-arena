@@ -19,7 +19,16 @@ export function TodoOptions({
   capEnabled
 }: TodoOptionsProps) {
   return (
-    <div className="flex gap-x-4 items-center mb-4">
+    <div className="flex gap-x-4 items-center mb-4 w-full">
+      <div className="flex gap-x-2 items-center">
+        <label htmlFor="enable-measurments">Enable measurments</label>
+        <input
+          type="checkbox"
+          id="enable-measurments"
+          defaultChecked={measuringEnabled}
+          onChange={(e) => setMeasuringEnabled(e.target.checked)}
+        />
+      </div>
       <div className="flex gap-x-2 items-center">
         <label htmlFor="show-items-stats">Show per item stats</label>
         <input
@@ -36,15 +45,6 @@ export function TodoOptions({
           id="highlight-renders"
           defaultChecked={highlightRenders}
           onChange={(e) => setHighlightRenders(e.target.checked)}
-        />
-      </div>
-      <div className="flex gap-x-2 items-center">
-        <label htmlFor="enable-measurments">Enable measurments</label>
-        <input
-          type="checkbox"
-          id="enable-measurments"
-          defaultChecked={measuringEnabled}
-          onChange={(e) => setMeasuringEnabled(e.target.checked)}
         />
       </div>
       <div className="flex gap-x-2 items-center">

@@ -1,3 +1,4 @@
+import { Button } from "@packages/shared-ui";
 import { useRef, type FormEvent } from "react";
 
 export type TodoAddItemProps = {
@@ -32,12 +33,7 @@ export function TodoAddItem({ onSave }: TodoAddItemProps) {
           ref={inputRef}
           autoComplete="off"
         />
-        <button
-          type="submit"
-          className="px-3 py-2 text-white bg-blue-700 rounded-md cursor-pointer"
-        >
-          Add task
-        </button>
+        <Button type="submit">Add task</Button>
       </div>
     </form>
   );

@@ -110,7 +110,7 @@ export function useTodoMainState(
         payload: { enable: capEnabled, capNumber: num }
       });
     },
-    [startTiming]
+    [startTiming, capEnabled]
   );
 
   const changeFilter = useCallback(
@@ -145,7 +145,6 @@ export function useTodoMainState(
       if (query && !task.text.toLowerCase().includes(query)) return false;
       return true;
     });
-
     return capEnabled ? filteredTasks.slice(0, capNumber) : filteredTasks;
   }, [tasks, activeFilter, searchQuery, capEnabled, capNumber]);
 

@@ -1,13 +1,20 @@
-import { lazy, Suspense, useState, type ChangeEvent } from "react";
+import { lazy, Suspense, useMemo, useState, type ChangeEvent } from "react";
 import MainApp from "@packages/main-app/src/App";
+import type { ScopeKey } from "@packages/shared-core";
+import { Button } from "@packages/shared-ui";
 
 const ContextRemote = lazy(() => import("context_app/App"));
 const ReduxRemote = lazy(() => import("redux_app/App"));
 const ZustandRemote = lazy(() => import("zustand_app/App"));
 
-const shuffle = (array: any[]) => {
-  return array.sort(() => Math.random() - 0.5);
-};
+function shuffle<T>(array: T[]): T[] {
+  const arrCopy = array.slice();
+  for (let i = arrCopy.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arrCopy[i], arrCopy[j]] = [arrCopy[j], arrCopy[i]];
+  }
+  return arrCopy;
+}
 
 type ToggleType =
   | "app-toggle-context"
@@ -18,11 +25,13 @@ export default function App() {
   const [showContext, setShowContext] = useState(true);
   const [showRedux, setShowRedux] = useState(true);
   const [showZustand, setShowZustand] = useState(true);
-  const [apps, setApps] = useState([
-    { app: ContextRemote, name: "Context", show: showContext },
-    { app: ReduxRemote, name: "Redux", show: showRedux },
-    { app: ZustandRemote, name: "Zustand", show: showZustand }
-  ]);
+
+  const defaultOrder = useMemo<Capitalize<ScopeKey>[]>(
+    () => ["Context", "Redux", "Zustand"],
+    []
+  );
+
+  const [apps, setApps] = useState(defaultOrder);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const name: ToggleType = e.target.name as ToggleType;
@@ -36,8 +45,31 @@ export default function App() {
     }
   };
 
+  const getApp = (name: Capitalize<ScopeKey>) => {
+    if (name === "Context") {
+      return {
+        app: ContextRemote,
+        show: showContext
+      };
+    }
+    if (name === "Redux") {
+      return {
+        app: ReduxRemote,
+        show: showRedux
+      };
+    }
+    return {
+      app: ZustandRemote,
+      show: showZustand
+    };
+  };
+
   const handleShuffle = () => {
-    setApps([...shuffle(apps)]);
+    setApps(shuffle(apps));
+  };
+
+  const handleRestoreOrder = () => {
+    setApps(defaultOrder);
   };
 
   return (
@@ -46,37 +78,31 @@ export default function App() {
 
       <section className="flex gap-x-4 items-center">
         <span>Show:</span>
-        <div className="flex gap-x-2 items-center">
-          <label htmlFor="contextToggle">Context app</label>
-          <input
-            type="checkbox"
-            name="app-toggle-context"
-            id="contextToggle"
-            checked={showContext}
-            onChange={(e) => handleChange(e)}
-          />
-        </div>
-        <div className="flex gap-x-2 items-center">
-          <label htmlFor="reduxToggle">Redux app</label>
-          <input
-            type="checkbox"
-            name="app-toggle-redux"
-            id="reduxToggle"
-            checked={showRedux}
-            onChange={(e) => handleChange(e)}
-          />
-        </div>
-        <div className="flex gap-x-2 items-center">
-          <label htmlFor="zustandToggle">Zustand app</label>
-          <input
-            type="checkbox"
-            name="app-toggle-zustand"
-            id="zustandToggle"
-            checked={showZustand}
-            onChange={(e) => handleChange(e)}
-          />
-        </div>
-        {/* <button onClick={handleShuffle}>Shuffle apps</button> */}
+        {defaultOrder.map((appName) => {
+          const lowercasedName = appName.toLowerCase();
+          const id = `${lowercasedName}Toggle`;
+          const name = `app-toggle-${lowercasedName}`;
+          const value =
+            appName === "Context"
+              ? showContext
+              : appName === "Redux"
+                ? showRedux
+                : showZustand;
+          return (
+            <div className="flex gap-x-2 items-center" key={appName}>
+              <label htmlFor={id}>{`${appName} app`}</label>
+              <input
+                type="checkbox"
+                name={name}
+                id={id}
+                checked={value}
+                onChange={(e) => handleChange(e)}
+              />
+            </div>
+          );
+        })}
+        <Button onClick={handleShuffle}>Shuffle apps</Button>
+        <Button onClick={handleRestoreOrder}>Restore default order</Button>
       </section>
 
       <section className="p-4 border">
@@ -84,45 +110,19 @@ export default function App() {
         <MainApp />
       </section>
 
-      {/* {apps.map((app) => {
+      {apps.map((app) => {
+        const { app: Remote, show } = getApp(app);
         return (
-          app.show && (
-            <section className="p-4 bg-gray-100 border" key={app.name}>
-              <h2 className="font-semibold">{app.name} Remote</h2>
-              <Suspense fallback={`Loading ${app.name} Remote...`}>
-                <ContextRemote />
+          show && (
+            <section className="p-4 bg-gray-100 border" key={app}>
+              <h2 className="mb-4 font-semibold">{app} Remote</h2>
+              <Suspense fallback={`Loading ${app} Remote...`}>
+                <Remote />
               </Suspense>
             </section>
           )
         );
-      })} */}
-
-      {showContext && (
-        <section className="p-4 bg-gray-100 border">
-          <h2 className="font-semibold">Context Remote</h2>
-          <Suspense fallback="Loading Context Remote...">
-            <ContextRemote />
-          </Suspense>
-        </section>
-      )}
-
-      {showRedux && (
-        <section className="p-4 bg-gray-100 border">
-          <h2 className="font-semibold">Redux Remote</h2>
-          <Suspense fallback="Loading Redux Remote...">
-            <ReduxRemote />
-          </Suspense>
-        </section>
-      )}
-
-      {showZustand && (
-        <section className="p-4 bg-gray-100 border">
-          <h2 className="font-semibold">Zustand Remote</h2>
-          <Suspense fallback="Loading Zustand Remote...">
-            <ZustandRemote />
-          </Suspense>
-        </section>
-      )}
+      })}
     </div>
   );
 }
