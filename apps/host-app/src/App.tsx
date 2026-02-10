@@ -2,6 +2,8 @@ import { lazy, Suspense, useMemo, useState, type ChangeEvent } from "react";
 import MainApp from "@packages/main-app/src/App";
 import type { ScopeKey } from "@packages/shared-core";
 import { Button } from "@packages/shared-ui";
+import { GithubLink } from "./components/GithubLink";
+import { AboutProject } from "./components/AboutProject";
 
 const ContextRemote = lazy(() => import("context_app/App"));
 const ReduxRemote = lazy(() => import("redux_app/App"));
@@ -74,7 +76,13 @@ export default function App() {
 
   return (
     <div className="p-4 space-y-4">
-      <h1 className="text-2xl font-bold">React State Arena 🤼‍♂️</h1>
+      <div className="flex justify-between items-center">
+        <h1 className="text-2xl font-bold">React State Arena 🤼‍♂️</h1>
+        <div className="flex gap-x-2 items-center">
+          <AboutProject />
+          <GithubLink />
+        </div>
+      </div>
 
       <section className="flex gap-x-4 items-center">
         <span>Show:</span>
