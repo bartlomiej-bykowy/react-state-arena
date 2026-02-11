@@ -1,7 +1,7 @@
 import {
   refreshUISignal,
-  useSignal,
-  type ScopeKey
+  type ScopeKey,
+  useSignal
 } from "@packages/shared-core";
 import type { Stats } from "@packages/shared-core/src/registry";
 

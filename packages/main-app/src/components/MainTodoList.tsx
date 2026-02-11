@@ -1,18 +1,17 @@
-import { TodoListEmptyState, TodoItem, TodoStats } from "@packages/shared-ui";
-
-import { useTodoMainState } from "../hooks/useTodoMainState";
 import {
   initialTasks,
+  type ScopeKey,
   useHighlight,
-  useListStats,
-  type ScopeKey
+  useListStats
 } from "@packages/shared-core";
+import { TodoItem, TodoListEmptyState, TodoStats } from "@packages/shared-ui";
 import { useRef } from "react";
+import { useTodoMainState } from "../hooks/useTodoMainState";
 import { TodoActions } from "./TodoActions";
+import { TodoAddItem } from "./TodoAddItem";
+import { TodoFilters } from "./TodoFilters";
 import { TodoOptions } from "./TodoOptions";
 import { TodoSearch } from "./TodoSearch";
-import { TodoFilters } from "./TodoFilters";
-import { TodoAddItem } from "./TodoAddItem";
 
 const SCOPE: ScopeKey = "main";
 

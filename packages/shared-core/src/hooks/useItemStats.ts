@@ -1,8 +1,8 @@
 import { useEffect, useLayoutEffect, useRef } from "react";
-import { registry } from "../registry";
-import type { ScopeKey } from "../types";
 import { ensureRecordInRegistry } from "../ensureRecordInRegistry";
+import { registry } from "../registry";
 import { measuringEnabled } from "../todoOptions";
+import type { ScopeKey } from "../types";
 
 export function useItemStats(id: string, scope: ScopeKey) {
   const startRender = useRef<number | null>(null);

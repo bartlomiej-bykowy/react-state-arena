@@ -1,10 +1,9 @@
-import { TodoListEmptyState, TodoItem, TodoStats } from "@packages/shared-ui";
-
 import {
+  type ScopeKey,
   useHighlight,
-  useListStats,
-  type ScopeKey
+  useListStats
 } from "@packages/shared-core";
+import { TodoItem, TodoListEmptyState, TodoStats } from "@packages/shared-ui";
 import { useRef } from "react";
 import { useReduxTodoState } from "../hooks/useReduxTodoState";
 import { useTodoEvents } from "../hooks/useTodoEvents";

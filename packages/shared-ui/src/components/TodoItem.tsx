@@ -1,12 +1,11 @@
-import { memo, useLayoutEffect, useRef } from "react";
-import type { KeyboardEvent, MouseEvent } from "react";
-
 import {
-  useHighlight,
-  useItemStats,
   type ScopeKey,
-  type Todo
+  type Todo,
+  useHighlight,
+  useItemStats
 } from "@packages/shared-core";
+import type { KeyboardEvent, MouseEvent } from "react";
+import { memo, useLayoutEffect, useRef } from "react";
 
 export type TodoItemProps = {
   task: Todo;

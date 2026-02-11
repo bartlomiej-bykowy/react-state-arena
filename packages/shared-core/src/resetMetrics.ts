@@ -1,5 +1,5 @@
-import { refreshUISignal } from "./signals";
 import { registry, type Stats } from "./registry";
+import { refreshUISignal } from "./signals";
 import type { ScopeKey } from "./types";
 
 function reset(stats: Stats) {

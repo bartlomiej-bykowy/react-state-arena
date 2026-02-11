@@ -1,7 +1,7 @@
 import "@packages/shared-ui/src/styles.css";
-import { TodoProvider } from "./store/context";
-import { ContextTodoList } from "./components/ContextTodoList";
 import { initialTasks } from "@packages/shared-core";
+import { ContextTodoList } from "./components/ContextTodoList";
+import { TodoProvider } from "./store/context";
 
 export default function App() {
   return (

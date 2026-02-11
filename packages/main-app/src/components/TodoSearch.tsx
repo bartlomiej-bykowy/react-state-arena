@@ -1,4 +1,4 @@
-import { useRef, type ChangeEvent } from "react";
+import { type ChangeEvent, useRef } from "react";
 
 export type TodoSearchProps = {
   readonly?: boolean;

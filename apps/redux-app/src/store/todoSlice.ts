@@ -1,5 +1,5 @@
-import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 import { TASKS_CAP, type TodoAction } from "@packages/shared-core";
+import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 import { initialState } from "./initialState";
 
 type ActionType = {

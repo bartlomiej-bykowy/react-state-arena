@@ -1,6 +1,5 @@
+import type { TodoAction, useListStats } from "@packages/shared-core";
 import { useEffect } from "react";
-import { useTodoDispatch } from "./useTodoDispatch";
-import type { useListStats, TodoAction } from "@packages/shared-core";
 import {
   add,
   addMany,
@@ -10,12 +9,13 @@ import {
   removeCompleted,
   removeMany,
   reset,
+  setTasksCap,
   showStats,
   toggle,
   toggleMany,
-  update,
-  setTasksCap
+  update
 } from "../store/todoSlice";
+import { useTodoDispatch } from "./useTodoDispatch";
 
 export function useTodoEvents(listStats: ReturnType<typeof useListStats>) {
   const dispatch = useTodoDispatch();

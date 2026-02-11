@@ -1,9 +1,9 @@
-import type { Reducer } from "react";
 import {
   TASKS_CAP,
-  type TodoStoreState,
-  type TodoAction
+  type TodoAction,
+  type TodoStoreState
 } from "@packages/shared-core";
+import type { Reducer } from "react";
 
 export const reducer: Reducer<TodoStoreState, TodoAction> = (state, action) => {
   switch (action.type) {

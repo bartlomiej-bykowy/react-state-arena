@@ -1,6 +1,6 @@
-import { useCallback, useMemo, useState } from "react";
+import type { Filter, Todo, useListStats } from "@packages/shared-core";
 import { generateUUID, TASKS_CAP } from "@packages/shared-core";
-import type { useListStats, Filter, Todo } from "@packages/shared-core";
+import { useCallback, useMemo, useState } from "react";
 import { dispatchTodoAction } from "../utils/dispatchTodoAction";
 
 export function useTodoMainState(

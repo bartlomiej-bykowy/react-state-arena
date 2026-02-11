@@ -1,9 +1,9 @@
 import { useCallback, useEffect, useLayoutEffect, useRef } from "react";
-import { refreshUISignal } from "../signals";
-import { registry } from "../registry";
-import type { ScopeKey } from "../types";
 import { ensureRecordInRegistry } from "../ensureRecordInRegistry";
+import { registry } from "../registry";
+import { refreshUISignal } from "../signals";
 import { measuringEnabled } from "../todoOptions";
+import type { ScopeKey } from "../types";
 
 export function useListStats(scope: ScopeKey) {
   const renderStart = useRef<number | null>(null);

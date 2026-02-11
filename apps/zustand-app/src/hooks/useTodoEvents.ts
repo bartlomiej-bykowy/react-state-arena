@@ -1,5 +1,5 @@
+import type { TodoAction, useListStats } from "@packages/shared-core";
 import { useEffect } from "react";
-import type { useListStats, TodoAction } from "@packages/shared-core";
 import { useStore } from "../store/store";
 
 export function useTodoEvents(listStats: ReturnType<typeof useListStats>) {

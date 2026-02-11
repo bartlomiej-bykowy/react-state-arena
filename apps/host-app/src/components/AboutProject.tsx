@@ -1,10 +1,10 @@
 import { Button } from "@packages/shared-ui";
-import { useState, type MouseEvent } from "react";
+import { type MouseEvent, useState } from "react";
 
 export function AboutProject() {
   const [detailsVisible, setDetailsVisible] = useState(false);
 
-  const handleClickCapture = (e: MouseEvent<HTMLDivElement, MouseEvent>) => {
+  const handleClickCapture = (e: MouseEvent<HTMLDivElement>) => {
     const isModal = (e.target as HTMLElement).closest("#modal");
 
     if (isModal) return;

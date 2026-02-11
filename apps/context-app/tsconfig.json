@@ -1,14 +1,9 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "composite": true,
     "outDir": "dist",
     "types": ["react", "react-dom"]
   },
   "include": ["src"],
-  "exclude": ["node_modules"],
-  "references": [
-    { "path": "../../packages/shared-core" },
-    { "path": "../../packages/shared-ui" }
-  ]
+  "exclude": ["node_modules", "dist"]
 }

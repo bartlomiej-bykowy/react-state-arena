@@ -4,7 +4,7 @@ import {
   type TodoAction,
   type TodoStoreState
 } from "@packages/shared-core";
-import { createContext, useReducer, type Dispatch } from "react";
+import { createContext, type Dispatch, useReducer } from "react";
 import { reducer } from "./reducer";
 
 type TodoProviderProps = {

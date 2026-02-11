@@ -1,9 +1,9 @@
-import { lazy, Suspense, useMemo, useState, type ChangeEvent } from "react";
 import MainApp from "@packages/main-app/src/App";
 import type { ScopeKey } from "@packages/shared-core";
 import { Button } from "@packages/shared-ui";
-import { GithubLink } from "./components/GithubLink";
+import { type ChangeEvent, lazy, Suspense, useMemo, useState } from "react";
 import { AboutProject } from "./components/AboutProject";
+import { GithubLink } from "./components/GithubLink";
 
 const ContextRemote = lazy(() => import("context_app/App"));
 const ReduxRemote = lazy(() => import("redux_app/App"));

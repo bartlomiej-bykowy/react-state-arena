@@ -1,7 +1,7 @@
+import { fileURLToPath } from "node:url";
 import { defineConfig } from "@rsbuild/core";
 import { pluginReact } from "@rsbuild/plugin-react";
 import { dependencies } from "./package.json";
-import { fileURLToPath } from "node:url";
 
 const repoRoot = fileURLToPath(new URL("../..", import.meta.url));
 
