@@ -1,6 +1,6 @@
-import { registry, type Stats } from "./registry";
-import { refreshUISignal } from "./signals";
-import type { ScopeKey } from "./types";
+import { registry, type Stats } from "../data/registry";
+import { refreshUISignal } from "../signal/signals";
+import type { ScopeKey } from "../types";
 
 function reset(stats: Stats) {
   stats.renders = 0;

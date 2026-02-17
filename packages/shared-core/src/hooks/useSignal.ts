@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import type { Subscriber } from "../signal";
+import type { Subscriber } from "../signal/signal";
 import type { ScopeKey } from "../types";
 
 type Signal = {

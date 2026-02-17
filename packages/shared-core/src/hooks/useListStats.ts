@@ -1,9 +1,9 @@
 import { useCallback, useEffect, useLayoutEffect, useRef } from "react";
-import { ensureRecordInRegistry } from "../ensureRecordInRegistry";
-import { registry } from "../registry";
-import { refreshUISignal } from "../signals";
-import { measuringEnabled } from "../todoOptions";
+import { registry } from "../data/registry";
+import { refreshUISignal } from "../signal/signals";
 import type { ScopeKey } from "../types";
+import { ensureRecordInRegistry } from "../utils/ensureRecordInRegistry";
+import { measuringEnabled } from "../utils/todoOptions";
 
 export function useListStats(scope: ScopeKey) {
   const renderStart = useRef<number | null>(null);
@@ -21,7 +21,6 @@ export function useListStats(scope: ScopeKey) {
 
   const startTiming = useCallback(() => {
     if (!measuringEnabled) return;
-
     totalRef.current.timing.lastMs = 0;
     renderStart.current = performance.now();
   }, []);

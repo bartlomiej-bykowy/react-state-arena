@@ -98,7 +98,7 @@ export function useTodoMainState(
       setCapEnabled(enable);
       dispatchTodoAction({ type: "cap", payload: { enable, capNumber } });
     },
-    [startTiming]
+    [startTiming, capNumber]
   );
 
   const chageCapNumber = useCallback(
@@ -122,7 +122,7 @@ export function useTodoMainState(
         payload: { query: searchQuery, filter: newFilter }
       });
     },
-    [startTiming]
+    [startTiming, searchQuery]
   );
 
   const search = useCallback(
@@ -134,7 +134,7 @@ export function useTodoMainState(
         payload: { query, filter: activeFilter }
       });
     },
-    [startTiming]
+    [startTiming, activeFilter]
   );
 
   const filteredTasks = useMemo(() => {

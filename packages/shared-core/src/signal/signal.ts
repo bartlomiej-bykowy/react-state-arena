@@ -1,4 +1,4 @@
-import type { ScopeKey } from "./types";
+import type { ScopeKey } from "../types";
 
 export type Subscriber = () => void;
 
@@ -8,13 +8,6 @@ export function createSignal() {
   const subscribersMap = new Map<ScopeKey, Set<Subscriber>>(
     scopes.map((scopes) => [scopes, new Set<Subscriber>()])
   );
-
-  const subscribersForScopeHasRan: { [K in ScopeKey]: boolean } = {
-    main: false,
-    context: false,
-    redux: false,
-    zustand: false
-  };
 
   return {
     runSubscribers(scope: ScopeKey) {
@@ -31,14 +24,7 @@ export function createSignal() {
     subscribe(scope: ScopeKey, fn: Subscriber) {
       const subscribers = subscribersMap.get(scope)!;
       subscribers.add(fn);
-      // for cases when subscribe() happens after set().
-      // Typically on initial render.
-      if (!subscribersForScopeHasRan[scope]) {
-        subscribers.forEach((fn) => {
-          fn();
-        });
-        subscribersForScopeHasRan[scope] = true;
-      }
+
       return () => subscribers.delete(fn);
     }
   };

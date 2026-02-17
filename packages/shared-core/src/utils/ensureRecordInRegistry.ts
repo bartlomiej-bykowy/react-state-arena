@@ -1,4 +1,4 @@
-import { type Registry, registry, type Stats } from "./registry";
+import { type Registry, registry, type Stats } from "../data/registry";
 
 export function ensureRecordInRegistry(
   records: keyof Registry,

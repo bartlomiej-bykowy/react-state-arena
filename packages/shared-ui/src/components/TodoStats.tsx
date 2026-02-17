@@ -1,9 +1,9 @@
 import {
   refreshUISignal,
   type ScopeKey,
+  type Stats,
   useSignal
 } from "@packages/shared-core";
-import type { Stats } from "@packages/shared-core/src/registry";
 
 export type TodoStatsProps = {
   total: number;

@@ -1,5 +1,5 @@
+import type { Todo } from "../types";
 import { generateUUID } from "./generateUUID";
-import type { Todo } from "./types";
 
 export function generateTodos(count: number): Todo[] {
   const todos: Todo[] = [];

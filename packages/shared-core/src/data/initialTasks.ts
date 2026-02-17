@@ -1,5 +1,5 @@
-import { generateUUID } from "./generateUUID";
-import type { Todo } from "./types";
+import type { Todo } from "../types";
+import { generateUUID } from "../utils/generateUUID";
 
 export const initialTasks: Todo[] = [
   {

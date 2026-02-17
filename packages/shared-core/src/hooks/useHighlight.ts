@@ -1,5 +1,5 @@
 import { type RefObject, useLayoutEffect, useRef } from "react";
-import { highlightRenders } from "../todoOptions";
+import { highlightRenders } from "../utils/todoOptions";
 
 export function useHighlight(elRef: RefObject<HTMLElement | null>) {
   const cancelledRef = useRef(false);

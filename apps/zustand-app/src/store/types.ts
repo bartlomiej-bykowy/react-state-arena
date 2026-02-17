@@ -6,4 +6,7 @@ export type StoreMethods = {
   [K in TodoAction["type"]]: (
     payload: Extract<TodoAction, { type: K }>["payload"]
   ) => void;
+} & {
+  removeCompleted: () => void;
+  reset: () => void;
 };

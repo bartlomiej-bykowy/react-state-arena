@@ -140,10 +140,10 @@ export const useStore = create<TodoStoreState & StoreMethods>(
           get().removeMany(action.payload);
           break;
         case "removeCompleted":
-          get().removeCompleted(action.payload);
+          get().removeCompleted();
           break;
         case "reset":
-          get().reset(action.payload);
+          get().reset();
           break;
         case "showStats":
           get().showStats(action.payload);

@@ -14,5 +14,5 @@ export function useTodoEvents(listStats: ReturnType<typeof useListStats>) {
     window.addEventListener("rsa:todo-action", actionHandler);
 
     return () => window.removeEventListener("rsa:todo-action", actionHandler);
-  }, [dispatch]);
+  }, [dispatch, listStats.startTiming]);
 }
