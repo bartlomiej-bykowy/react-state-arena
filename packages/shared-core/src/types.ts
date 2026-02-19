@@ -24,7 +24,8 @@ export type TodoAction =
   | { type: "removeCompleted"; payload?: null }
   | { type: "reset"; payload: { tasks: Todo[] } }
   | { type: "showStats"; payload: { show: boolean } }
-  | { type: "cap"; payload: { enable: boolean; capNumber: number } };
+  | { type: "cap"; payload: { enable: boolean; capNumber: number } }
+  | { type: "rewriteState"; payload: TodoStoreState };
 
 export type TodoStoreState = {
   tasks: Todo[];

@@ -30,6 +30,7 @@ export function TodoSearch({ readonly, onSearch }: TodoSearchProps) {
         disabled={readonly}
         className="py-2 pr-12 pl-3 rounded-md border border-gray-400 focus:border-purple-600"
         ref={inputRef}
+        data-testid="todo-search-input"
       />
       <span className="flex absolute top-0 right-0 justify-center items-center w-8 h-8 bg-transparent">
         🔎

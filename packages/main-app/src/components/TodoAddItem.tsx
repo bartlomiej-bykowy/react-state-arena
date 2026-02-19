@@ -32,8 +32,11 @@ export function TodoAddItem({ onSave }: TodoAddItemProps) {
           className="flex-1 px-3 py-2 rounded-md border border-gray-400"
           ref={inputRef}
           autoComplete="off"
+          data-testid="todo-add-input"
         />
-        <Button type="submit">Add task</Button>
+        <Button type="submit" testId="todo-add-submit">
+          Add task
+        </Button>
       </div>
     </form>
   );

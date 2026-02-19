@@ -19,7 +19,7 @@ export function ZustandTodoList() {
   useHighlight(listRef);
 
   return (
-    <>
+    <div data-testid="app-zustand">
       <div className="mb-5">
         <TodoStats
           total={stats.total}
@@ -46,6 +46,6 @@ export function ZustandTodoList() {
           <TodoListEmptyState />
         )}
       </div>
-    </>
+    </div>
   );
 }

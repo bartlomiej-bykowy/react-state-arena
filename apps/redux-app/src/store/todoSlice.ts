@@ -126,6 +126,11 @@ const todoSlice = createSlice({
         capEnabled: action.payload.enable,
         capNumber: action.payload.capNumber
       };
+    },
+    rewriteState(_state, action: PayloadAction<ActionType["rewriteState"]>) {
+      return {
+        ...action.payload
+      };
     }
   }
 });
@@ -143,7 +148,8 @@ export const {
   removeMany,
   reset,
   showStats,
-  setTasksCap
+  setTasksCap,
+  rewriteState
 } = todoSlice.actions;
 
 export const todoReducer = todoSlice.reducer;

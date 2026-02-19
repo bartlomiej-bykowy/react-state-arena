@@ -14,4 +14,8 @@ export function useTodoEvents(listStats: ReturnType<typeof useListStats>) {
 
     return () => window.removeEventListener("rsa:todo-action", actionHandler);
   }, [dispatchEvent]);
+
+  useEffect(() => {
+    window.dispatchEvent(new CustomEvent("rsa:state-request"));
+  }, []);
 }

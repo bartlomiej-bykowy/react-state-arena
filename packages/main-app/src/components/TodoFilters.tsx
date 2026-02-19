@@ -34,6 +34,7 @@ export function TodoFilters({
         onChange={handleChange}
         value={activeFilter}
         className="px-3 py-2 ml-2 rounded-md border border-gray-400"
+        data-testid="todo-filter"
       >
         {filters.map((filter) => (
           <option value={filter} key={filter}>

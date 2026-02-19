@@ -19,7 +19,7 @@ export function ContextTodoList() {
   useHighlight(listRef);
 
   return (
-    <>
+    <div data-testid="app-context">
       <div className="mb-5">
         <TodoStats
           total={stats.total}
@@ -46,6 +46,6 @@ export function ContextTodoList() {
           <TodoListEmptyState />
         )}
       </div>
-    </>
+    </div>
   );
 }

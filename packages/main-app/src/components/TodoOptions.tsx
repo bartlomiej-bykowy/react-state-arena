@@ -21,12 +21,13 @@ export function TodoOptions({
   return (
     <div className="flex gap-x-4 items-center mb-4 w-full">
       <div className="flex gap-x-2 items-center">
-        <label htmlFor="enable-measurments">Enable measurments</label>
+        <label htmlFor="enable-measurements">Enable measurments</label>
         <input
           type="checkbox"
-          id="enable-measurments"
+          id="enable-measurements"
           defaultChecked={measuringEnabled}
           onChange={(e) => setMeasuringEnabled(e.target.checked)}
+          data-testid="enable-measurements"
         />
       </div>
       <div className="flex gap-x-2 items-center">

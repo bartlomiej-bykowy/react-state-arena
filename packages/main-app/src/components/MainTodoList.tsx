@@ -45,7 +45,7 @@ export function MainTodoList() {
   useHighlight(listRef);
 
   return (
-    <>
+    <div data-testid="app-main">
       <div className="flex flex-wrap gap-x-4 items-center text-xs">
         <TodoOptions
           onStatsVisibilityChange={changeStatsVisibility}
@@ -100,6 +100,6 @@ export function MainTodoList() {
           <TodoListEmptyState />
         )}
       </div>
-    </>
+    </div>
   );
 }

@@ -24,8 +24,11 @@ export function TodoStats({
   const { listStats, itemsStats } = stats;
 
   return (
-    <div className="flex justify-between px-4 py-3 space-y-1 font-mono text-xs text-gray-600 border border-red-500">
-      <div className="flex flex-col gap-y-2">
+    <div
+      className="flex justify-between px-4 py-3 space-y-1 font-mono text-xs text-gray-600 border border-red-500"
+      data-testid={`${scope}-stats`}
+    >
+      <div className="flex flex-col gap-y-2" data-testid="number-of-tasks">
         <span>Number of tasks:</span>
         <ul>
           <li>total = {total}</li>
@@ -34,7 +37,7 @@ export function TodoStats({
         </ul>
       </div>
 
-      <div className="flex flex-col gap-y-2">
+      <div className="flex flex-col gap-y-2" data-testid="number-of-renders">
         <span>Number of renders:</span>
         <ul>
           <li>list = {listStats?.renders}</li>
@@ -42,7 +45,7 @@ export function TodoStats({
         </ul>
       </div>
 
-      <div className="flex flex-col gap-y-2">
+      <div className="flex flex-col gap-y-2" data-testid="list-render-time">
         <span>List render time:</span>
         <ul>
           <li>last = {listStats?.timing.lastMs.toFixed(2)}ms</li>
@@ -50,7 +53,7 @@ export function TodoStats({
         </ul>
       </div>
 
-      <div className="flex flex-col gap-y-2">
+      <div className="flex flex-col gap-y-2" data-testid="items-render-time">
         <span>Items render time:</span>
         <ul>
           <li>last = {itemsStats?.timing.lastMs.toFixed(2)}ms</li>

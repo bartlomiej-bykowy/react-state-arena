@@ -1,7 +1,13 @@
-import type { Filter, Todo, useListStats } from "@packages/shared-core";
+import type {
+  Filter,
+  Todo,
+  TodoStoreState,
+  useListStats
+} from "@packages/shared-core";
 import { generateUUID, TASKS_CAP } from "@packages/shared-core";
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { dispatchTodoAction } from "../utils/dispatchTodoAction";
+import { TodoStatsProps } from "@packages/shared-ui";
 
 export function useTodoMainState(
   initialState: Todo[],
@@ -13,6 +19,8 @@ export function useTodoMainState(
   const [itemStatsVisible, setItemStatsVisible] = useState(false);
   const [capEnabled, setCapEnabled] = useState(false);
   const [capNumber, setCapNumber] = useState(TASKS_CAP);
+
+  const stateRef = useRef<TodoStoreState>(null);
 
   const { startTiming } = listStatsHook;
 
@@ -205,6 +213,37 @@ export function useTodoMainState(
     setTasks((oldTasks) => oldTasks.filter((task) => !task.completed));
     dispatchTodoAction({ type: "removeCompleted" });
   }, [startTiming]);
+
+  const rewriteState = () => {
+    dispatchTodoAction({
+      type: "rewriteState",
+      payload: stateRef.current!
+    });
+  };
+
+  useEffect(() => {
+    stateRef.current = {
+      tasks,
+      activeFilter,
+      searchQuery,
+      showStatsPerItem: itemStatsVisible,
+      capEnabled,
+      capNumber
+    };
+  }, [
+    tasks,
+    activeFilter,
+    searchQuery,
+    itemStatsVisible,
+    capEnabled,
+    capNumber
+  ]);
+
+  useEffect(() => {
+    window.addEventListener("rsa:state-request", rewriteState);
+
+    return () => window.removeEventListener("rsa:stat-request", rewriteState);
+  }, []);
 
   return {
     filteredTasks,

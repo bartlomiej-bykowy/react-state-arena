@@ -64,13 +64,20 @@ export function TodoActions({
               )
             }
             className="max-w-[60px] px-3 py-2 rounded-md border border-gray-400 focus:border-purple-600"
+            data-testid="limit-rendered-tasks-input"
           />
         </div>
       )}
       <div className="flex gap-x-3 items-center p-2 rounded-md border border-gray-400 border-dashed">
-        <Button onClick={handleAddMany}>Add</Button>
-        <Button onClick={handleToggleMany}>Toggle</Button>
-        <Button onClick={handleRemoveMany}>Remove</Button>
+        <Button onClick={handleAddMany} testId="add-many-button">
+          Add
+        </Button>
+        <Button onClick={handleToggleMany} testId="toggle-many-button">
+          Toggle
+        </Button>
+        <Button onClick={handleRemoveMany} testId="remove-many-button">
+          Remove
+        </Button>
 
         <label htmlFor="number-of-tasks" className="sr-only">
           Set number of tasks
@@ -86,12 +93,19 @@ export function TodoActions({
             )
           }
           className="max-w-[75px] px-3 py-2 rounded-md border border-gray-400 focus:border-purple-600"
+          data-testid="number-of-tasks-input"
         />
         <span>tasks</span>
       </div>
-      <Button onClick={reset}>Reset</Button>
-      <Button onClick={removeCompleted}>Remove completed</Button>
-      <Button onClick={resetMetrics}>Reset metrics</Button>
+      <Button onClick={reset} testId="reset-button">
+        Reset tasks
+      </Button>
+      <Button onClick={removeCompleted} testId="remove-completed-button">
+        Remove completed
+      </Button>
+      <Button onClick={resetMetrics} testId="reset-metrics-button">
+        Reset metrics
+      </Button>
     </div>
   );
 }

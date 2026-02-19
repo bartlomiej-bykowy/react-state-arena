@@ -19,7 +19,7 @@ export function ReduxTodoList() {
   useHighlight(listRef);
 
   return (
-    <>
+    <div data-testid="app-redux">
       <div className="mb-5">
         <TodoStats
           total={stats.total}
@@ -46,6 +46,6 @@ export function ReduxTodoList() {
           <TodoListEmptyState />
         )}
       </div>
-    </>
+    </div>
   );
 }

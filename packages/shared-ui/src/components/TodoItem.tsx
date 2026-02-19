@@ -82,9 +82,12 @@ export const TodoItem = memo(function TodoItem({
     <div
       className={`relative px-3 py-2 w-full h-[44px] flex items-center gap-x-4 ${readonly ? "" : "hover:bg-gray-100"} rounded-md mb-4 shadow-[0_0_12px_0_rgba(66,68,90,0.25)] text-xs`}
       ref={itemRef}
+      data-testid="todo-item"
+      data-todo-id={task.id}
     >
       <div
         className={`flex absolute top-0 right-0 gap-x-3 items-center text-[10px] -translate-y-1/2 ${!statsVisible ? "invisible" : ""}`}
+        data-testid="todo-stats"
       >
         <span
           className="px-1 py-0.5 bg-green-400 rounded-full"
@@ -106,6 +109,7 @@ export const TodoItem = memo(function TodoItem({
         onChange={handleToggle}
         disabled={readonly}
         className={readonly ? "cursor-not-allowed" : ""}
+        data-testid="todo-toggle"
       />
       {!task.editing ? (
         <p className={`${task.completed ? "line-through text-gray-500" : ""}`}>
@@ -124,6 +128,7 @@ export const TodoItem = memo(function TodoItem({
             className="px-2 py-1 w-full rounded-md border border-gray-400"
             autoFocus
             disabled={readonly}
+            data-testid="todo-edit-input"
           />
           <p className="text-[10px] text-gray-600 whitespace-nowrap">
             (Press Enter to accept, press Esc to cancel)
@@ -139,6 +144,7 @@ export const TodoItem = memo(function TodoItem({
               className={`w-7 h-7 flex items-center justify-center ${task.completed ? "cursor-not-allowed" : "cursor-pointer"}`}
               onClick={(e) => handleEdit(e)}
               disabled={readonly || task.completed}
+              data-testid="todo-edit"
             >
               🖊️
             </button>
@@ -149,6 +155,7 @@ export const TodoItem = memo(function TodoItem({
             className="flex justify-center items-center w-7 h-7 cursor-pointer"
             onClick={(e) => handleDelete(e)}
             disabled={readonly}
+            data-testid="todo-delete"
           >
             🗑️
           </button>

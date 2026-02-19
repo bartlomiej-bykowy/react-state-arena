@@ -105,6 +105,10 @@ export const reducer: Reducer<TodoStoreState, TodoAction> = (state, action) => {
         capEnabled: action.payload.enable,
         capNumber: action.payload.capNumber
       };
+    case "rewriteState":
+      return {
+        ...action.payload
+      };
     default:
       return state;
   }

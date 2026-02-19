@@ -9,6 +9,7 @@ import {
   removeCompleted,
   removeMany,
   reset,
+  rewriteState,
   setTasksCap,
   showStats,
   toggle,
@@ -64,6 +65,9 @@ export function useTodoEvents(listStats: ReturnType<typeof useListStats>) {
           break;
         case "cap":
           dispatch(setTasksCap(payload));
+          break;
+        case "rewriteState":
+          dispatch(rewriteState(payload));
       }
     };
 
@@ -71,4 +75,8 @@ export function useTodoEvents(listStats: ReturnType<typeof useListStats>) {
 
     return () => window.removeEventListener("rsa:todo-action", actionHandler);
   }, [dispatch]);
+
+  useEffect(() => {
+    window.dispatchEvent(new CustomEvent("rsa:state-request"));
+  }, []);
 }

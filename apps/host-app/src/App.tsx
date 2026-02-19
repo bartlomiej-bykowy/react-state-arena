@@ -75,7 +75,7 @@ export default function App() {
   };
 
   return (
-    <div className="p-4 space-y-4">
+    <div className="p-4 space-y-4" data-testid="app-host">
       <div className="flex justify-between items-center">
         <h1 className="text-2xl font-bold">React State Arena 🤼‍♂️</h1>
         <div className="flex gap-x-2 items-center">
@@ -105,12 +105,20 @@ export default function App() {
                 id={id}
                 checked={value}
                 onChange={(e) => handleChange(e)}
+                data-testid={`toggle-${lowercasedName}`}
               />
             </div>
           );
         })}
-        <Button onClick={handleShuffle}>Shuffle apps</Button>
-        <Button onClick={handleRestoreOrder}>Restore default order</Button>
+        <Button onClick={handleShuffle} data-testid="shuffle-apps-button">
+          Shuffle apps
+        </Button>
+        <Button
+          onClick={handleRestoreOrder}
+          data-testid="restore-default-order-button"
+        >
+          Restore default order
+        </Button>
       </section>
 
       <section className="p-4 border">

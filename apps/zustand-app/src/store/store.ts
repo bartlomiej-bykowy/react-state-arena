@@ -109,6 +109,11 @@ export const useStore = create<TodoStoreState & StoreMethods>(
         capNumber: payload.capNumber
       }));
     },
+    rewriteState: (payload) => {
+      set(() => ({
+        ...payload
+      }));
+    },
     // action dispatcher
     applyEvent: (action) => {
       switch (action.type) {
@@ -150,6 +155,9 @@ export const useStore = create<TodoStoreState & StoreMethods>(
           break;
         case "cap":
           get().cap(action.payload);
+          break;
+        case "rewriteState":
+          get().rewriteState(action.payload);
           break;
         default:
           return;
