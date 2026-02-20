@@ -14,9 +14,6 @@ dist/
 # Rsbuild
 .rsbuild
 
-# pnpm
-pnpm-lock.yaml
-
 # IDE
 .vscode/*
 !.vscode/extensions.json
