@@ -3,6 +3,8 @@ import { defineConfig } from "@rsbuild/core";
 import { pluginReact } from "@rsbuild/plugin-react";
 import { dependencies } from "./package.json";
 
+process.loadEnvFile();
+
 const repoRoot = fileURLToPath(new URL("../..", import.meta.url));
 
 export default defineConfig({
@@ -24,9 +26,9 @@ export default defineConfig({
     options: {
       name: "host_app",
       remotes: {
-        context_app: "context_app@http://localhost:3001/remoteEntry.js",
-        redux_app: "redux_app@http://localhost:3002/remoteEntry.js",
-        zustand_app: "zustand_app@http://localhost:3003/remoteEntry.js"
+        context_app: `context_app@${process.env.RSA_CONTEXT_URL}/remoteEntry.js`,
+        redux_app: `redux_app@${process.env.RSA_REDUX_URL}/remoteEntry.js`,
+        zustand_app: `zustand_app@${process.env.RSA_ZUSTAND_URL}/remoteEntry.js`
       },
       shared: {
         ...dependencies,
