@@ -7,7 +7,6 @@ import type {
 import { generateUUID, TASKS_CAP } from "@packages/shared-core";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { dispatchTodoAction } from "../utils/dispatchTodoAction";
-import { TodoStatsProps } from "@packages/shared-ui";
 
 export function useTodoMainState(
   initialState: Todo[],
