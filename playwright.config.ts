@@ -47,6 +47,11 @@ export default defineConfig({
     command: "pnpm dev:all",
     url: "http://localhost:3000",
     reuseExistingServer: !process.env.CI,
-    timeout: 120_000
+    timeout: 120_000,
+    env: {
+      RSA_CONTEXT_URL: "http://localhost:3001",
+      RSA_REDUX_URL: "http://localhost:3002",
+      RSA_ZUSTAND_URL: "http://localhost:3003"
+    }
   }
 });
