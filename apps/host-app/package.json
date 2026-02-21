@@ -4,9 +4,9 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "dev": "rsbuild dev",
-    "build": "rsbuild build",
-    "preview": "rsbuild preview",
+    "dev": "rsbuild dev --env-dir ../..",
+    "build": "rsbuild build --env-dir ../..",
+    "preview": "rsbuild preview --env-dir ../..",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {

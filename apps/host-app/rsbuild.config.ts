@@ -3,8 +3,6 @@ import { defineConfig } from "@rsbuild/core";
 import { pluginReact } from "@rsbuild/plugin-react";
 import { dependencies } from "./package.json";
 
-process.loadEnvFile();
-
 const repoRoot = fileURLToPath(new URL("../..", import.meta.url));
 
 export default defineConfig({
