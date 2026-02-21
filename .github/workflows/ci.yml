@@ -105,11 +105,16 @@ jobs:
           retention-days: 7
 
   # -------------------------
-  # Build (only if lint + test + e2e passed)
+  # Build (only if lint + test + e2e passed) and notify Vercel
   # -------------------------
   build:
     needs: [lint, test, e2e]
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      statuses: write
+      checks: write
+      deployments: write
     steps:
       - name: Checkout
         uses: actions/checkout@v6
@@ -135,3 +140,4 @@ jobs:
         uses: 'vercel/repository-dispatch/actions/status@v1'
         with:
           name: "Vercel - react-state-arena: build"
+
