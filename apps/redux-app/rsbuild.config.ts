@@ -16,6 +16,9 @@ export default defineConfig({
       addPlugins(tailwind({ base: repoRoot }));
     }
   },
+  output: {
+    assetPrefix: process.env.RSA_REDUX_URL
+  },
   moduleFederation: {
     options: {
       name: "redux_app",

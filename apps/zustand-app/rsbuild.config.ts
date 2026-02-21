@@ -16,6 +16,9 @@ export default defineConfig({
       addPlugins(tailwind({ base: repoRoot }));
     }
   },
+  output: {
+    assetPrefix: process.env.RSA_ZUSTAND_URL
+  },
   moduleFederation: {
     options: {
       name: "zustand_app",

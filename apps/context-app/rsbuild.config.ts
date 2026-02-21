@@ -16,6 +16,9 @@ export default defineConfig({
       addPlugins(tailwind({ base: repoRoot }));
     }
   },
+  output: {
+    assetPrefix: process.env.RSA_CONTEXT_URL
+  },
   moduleFederation: {
     options: {
       name: "context_app",
