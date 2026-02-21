@@ -68,6 +68,10 @@ jobs:
   # -------------------------
   e2e:
     runs-on: ubuntu-latest
+    env:
+      RSA_CONTEXT_URL: http://localhost:3001
+      RSA_REDUX_URL: http://localhost:3002
+      RSA_ZUSTAND_URL: http://localhost:3003
     steps:
       - name: Checkout
         uses: actions/checkout@v6
@@ -126,4 +130,3 @@ jobs:
 
       - name: Build
         run: pnpm build
-        
